@@ -1,20 +1,14 @@
 import gsap from "gsap"
 import * as THREE from 'three'
-import { Color, Cube, CubeLayer, Direction, Orientation, Side } from "./cube-constants"
-import { cubeColors, hold, innerCubeMaterials, layers } from "./main"
+import { Color, Cube, CubeLayer, Direction, Orientation, Side, autoplay, cubeColors, innerCubeMaterials, layers, next } from "./cube-constants"
 import { innerCubeBlackMaterial } from "./materials"
 import { rotateFaceColorsXDownCenterMoves, rotateFaceColorsXDownCornerMoves, rotateFaceColorsXDownEdgeMoves, rotateFaceColorsXUpCenterMoves, rotateFaceColorsXUpCornerMoves, rotateFaceColorsXUpEdgeMoves, rotateFaceColorsYLeftCenterMoves, rotateFaceColorsYLeftCornerMoves, rotateFaceColorsYLeftEdgeMoves, rotateFaceColorsYRightCenterMoves, rotateFaceColorsYRightCornerMoves, rotateFaceColorsYRightEdgeMoves, rotateLayerColorsLeftCornerMoves, rotateLayerColorsLeftEgdeMoves, rotateLayerColorsRightCornerMoves, rotateLayerColorsRightEgdeMoves } from "./moves"
-import { next } from "./sequence-executor"
 import { Move, MoveWithLayer, TCubeLayer, TDirection, TLayer, TOriention, TSide } from "./types"
 
 export let turnTime = 0.3
 export let turnEnabled = true
 
 let currentOrientation: TOriention = Orientation.Z
-
-export function clearHold() {
-    clearInterval(hold)
-}
 
 export function setTurnTime(time: number) {
     turnTime = time;
@@ -91,7 +85,7 @@ export function turnCube(direction: TDirection, twice?: boolean) {
 
             turnEnabled = true
             
-            if (!twice) {
+            if (!twice && autoplay.checked) {
                 next.dispatchEvent(new InputEvent('input'))
             }
             if (twice) {
@@ -168,7 +162,7 @@ export function turn(layer: TCubeLayer, direction: TDirection, twice?: boolean) 
 
         orientLayersZ();
 
-        if (!twice) {
+        if (!twice && autoplay.checked) {
             next.dispatchEvent(new InputEvent('input'))
         }
         if (twice) {

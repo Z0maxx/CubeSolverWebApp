@@ -1,3 +1,6 @@
+import * as THREE from "three" 
+import { assertExists, assertHTMLInputElement } from "./assertions"
+
 export const Side = {
     RIGHT: 0,
     LEFT: 1,
@@ -72,8 +75,7 @@ export const ColorNumber = {
     ORANGE: 6
 } as const
 
-export const Notation =
-{
+export const Notation = {
     NONE: 0,
     L: 1, Lp: 2, L2: 3,
     R: 4, Rp: 5, R2: 6,
@@ -88,3 +90,9 @@ export const Notation =
     y: 31, yp: 32, y2: 33,
     z: 34, zp: 35, z2: 36
 } as const
+
+export const next = assertExists(document.getElementById('next')) as HTMLInputElement
+export const cubeColors: Array<Array<Array<[number, number, number]>>> = []
+export const innerCubeMaterials: Array<Array<Array<THREE.ShaderMaterial>>> = []
+export const layers = new THREE.Group()
+export const autoplay = assertHTMLInputElement(document.getElementById('autoplay'))
