@@ -7,6 +7,5 @@
 #include "variables.cuh"
 #include "structs.h"
 #include "device_atomic_functions.h"
-#include "error_printer.cuh"
 
 extern void findSequence();
