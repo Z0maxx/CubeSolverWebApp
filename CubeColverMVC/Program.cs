@@ -1,9 +1,17 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddCors()
+    .AddControllersWithViews();
 
 var app = builder.Build();
+app.UseCors(options => {
+    options
+        .WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+  });
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
