@@ -84,7 +84,6 @@
   <ItemGroup>
     <CudaCompile Include="corner_finder.cu" />
     <CudaCompile Include="cross_references.cu" />
-    <CudaCompile Include="error_printer.cu" />
     <CudaCompile Include="f2l_corner_references.cu" />
     <CudaCompile Include="f2l_corner_rotations.cu" />
     <CudaCompile Include="f2l_corner_sequences.cu" />
@@ -123,20 +122,16 @@
     <CudaCompile Include="pll_orient_sequence_executor.cu" />
     <CudaCompile Include="pll_orient_solver.cu" />
     <CudaCompile Include="solve_rotation_finder.cu" />
-    <CudaCompile Include="test_rotations.cu" />
     <CudaCompile Include="variables.cu" />
     <CudaCompile Include="edge_finder.cu" />
     <CudaCompile Include="cross_sequence_finder.cu" />
     <CudaCompile Include="kernel.cu" />
     <CudaCompile Include="notation_translator.cu" />
-    <CudaCompile Include="cube_printer.cu" />
     <CudaCompile Include="cross_sequence_executor.cu" />
-    <ClCompile Include="ms_clock.cu" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="corner_finder.cuh" />
     <ClInclude Include="cross_references.cuh" />
-    <ClInclude Include="error_printer.cuh" />
     <ClInclude Include="f2l_corner_references.cuh" />
     <ClInclude Include="f2l_corner_rotations.cuh" />
     <ClInclude Include="f2l_corner_sequences.cuh" />
@@ -155,7 +150,6 @@
     <ClInclude Include="f2l_edge_sequence_finder.cuh" />
     <ClInclude Include="f2l_edge_solver.cuh" />
     <ClInclude Include="sequence_processor.cuh" />
-    <ClInclude Include="ms_clock.cuh" />
     <ClInclude Include="oll_cross_references.cuh" />
     <ClInclude Include="oll_cross_sequences.cuh" />
     <ClInclude Include="oll_cross_sequence_executor.cuh" />
@@ -182,7 +176,6 @@
     <ClInclude Include="edge_finder.cuh" />
     <ClInclude Include="cross_sequence_finder.cuh" />
     <ClInclude Include="notation_translator.cuh" />
-    <ClInclude Include="cube_printer.cuh" />
     <ClInclude Include="cross_sequence_executor.cuh" />
     <ClInclude Include="structs.h" />
   </ItemGroup>

@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CudaCompile Include="cube_printer.cu">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
     <CudaCompile Include="variables.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
@@ -76,9 +73,6 @@
     <CudaCompile Include="cross_references.cu">
       <Filter>Source Files\Cross</Filter>
     </CudaCompile>
-    <CudaCompile Include="error_printer.cu">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
     <CudaCompile Include="oll_cross_references.cu">
       <Filter>Source Files\OLLCross</Filter>
     </CudaCompile>
@@ -145,14 +139,8 @@
     <CudaCompile Include="solve_rotation_finder.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
-    <CudaCompile Include="test_rotations.cu">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cube_printer.cuh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -230,12 +218,6 @@
     </ClInclude>
     <ClInclude Include="f2l_edge_references.cuh">
       <Filter>Header Files\F2LEdge</Filter>
-    </ClInclude>
-    <ClInclude Include="error_printer.cuh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ms_clock.cuh">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="oll_cross_references.cuh">
       <Filter>Header Files\OLLCross</Filter>
@@ -362,10 +344,5 @@
     <Filter Include="Header Files\TestRotations">
       <UniqueIdentifier>{2ff4989c-07fd-4602-ba26-8923b5ccf1f1}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ms_clock.cu">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
