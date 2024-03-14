@@ -6,6 +6,8 @@
 #define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
 #endif
 
+__managed__ bool hadError;
+
 __constant__ const Move const_layerCornerMoves[9][2][4] =
 {
 	{

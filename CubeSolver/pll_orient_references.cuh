@@ -7,4 +7,6 @@
 extern __constant__ Reference const_PLLOrientReference;
 extern __constant__ Reference const_PLLOrientTargetReferences[4];
 extern __constant__ Reference const_PLLOrientCurrentTargetReference;
+extern __constant__ Reference const_PLLOrientEdgeMatchReferences[2];
+extern __constant__ Reference const_PLLOrientCornerMatchReferences[2];
 extern __constant__ Reference const_PLLOrientFinalReferences[2];

@@ -29,4 +29,5 @@ int main(int argc, char* argv[])
             printf("%d ", sequence[i]);
         }
     }
+    printf("%d", hadError);
 }

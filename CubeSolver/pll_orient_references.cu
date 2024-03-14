@@ -38,6 +38,34 @@ __constant__ Reference const_PLLOrientCurrentTargetReference =
 	Side_Top
 };
 
+__constant__ Reference const_PLLOrientEdgeMatchReferences[2] =
+{
+	{
+		Layer_Front,
+		Cube_Center,
+		Side_Front
+	},
+	{
+		Layer_Front,
+		Cube_Left,
+		Side_Front
+	}
+};
+
+__constant__ Reference const_PLLOrientCornerMatchReferences[2] =
+{
+	{
+		Layer_Front,
+		Cube_Center,
+		Side_Front
+	},
+	{
+		Layer_Front,
+		Cube_Bottom_Left,
+		Side_Front
+	}
+};
+
 __constant__ Reference const_PLLOrientFinalReferences[2] =
 {
 	{

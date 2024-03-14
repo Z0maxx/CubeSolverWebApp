@@ -1,19 +1,33 @@
 #include "pll_orient_solver.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
+__device__ bool doesPLLOrientEdgeMatch(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx)
+{
+	Color colors[2]{};
+	for (int i = 0; i < 2; i++)
+	{
+		colors[i] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientEdgeMatchReferences[i].layer][const_PLLOrientEdgeMatchReferences[i].cube][const_PLLOrientEdgeMatchReferences[i].side];
+	}
+	return colors[0] == colors[1];
+}
 
-__device__ bool isPLLOrientCorrect(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor)
+__device__ bool doesPLLOrientCornerMatch(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx)
+{
+	Color colors[2]{};
+	for (int i = 0; i < 2; i++)
+	{
+		colors[i] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientCornerMatchReferences[i].layer][const_PLLOrientCornerMatchReferences[i].cube][const_PLLOrientCornerMatchReferences[i].side];
+	}
+	return colors[0] == colors[1];
+}
+
+__device__ int PLLOrientCorrectCount(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor)
 {
 	int j = 0;
 	while (j < 4 && dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientTargetReferences[j].layer][const_PLLOrientTargetReferences[j].cube][const_PLLOrientTargetReferences[j].side] == targetColor)
 	{
 		j++;
 	}
-	return j == 4;
+	return j;
 }
 
 __device__ bool isPLLOrientCurrentCorrect(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor)
@@ -31,12 +45,15 @@ __device__ void PLLOrientSolve(const int cubeIdx, const uint2 crossIdx, const ui
 	Color targetColor = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientReference.layer][const_PLLOrientReference.cube][const_PLLOrientReference.side];
 	int idx = 0;
 	int roundIdx = 0;
-	bool correct = isPLLOrientCorrect(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
-	while (!correct)
+	int correctCount = PLLOrientCorrectCount(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
+	bool edgeMatch = doesPLLOrientEdgeMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
+	bool cornerMatch = doesPLLOrientCornerMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
+	while (correctCount != 4 && !(edgeMatch && cornerMatch && correctCount == 3))
 	{
 		bool currentCorrect = isPLLOrientCurrentCorrect(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
 		roundIdx = 0;
-		while (!currentCorrect)
+
+		while (!currentCorrect && !(edgeMatch && cornerMatch && correctCount == 3))
 		{
 			executePLLOrientSequence(cubeIdx, crossIdx, cornerIdx, edgeIdx, idx, roundIdx);
 			currentCorrect = isPLLOrientCurrentCorrect(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
@@ -45,13 +62,26 @@ __device__ void PLLOrientSolve(const int cubeIdx, const uint2 crossIdx, const ui
 				roundIdx++;
 			}
 
+			edgeMatch = doesPLLOrientEdgeMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
+			cornerMatch = doesPLLOrientCornerMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
+			if (edgeMatch && cornerMatch && correctCount == 3)
+			{
+				hadError = true;
+			}
 		}
-		correct = isPLLOrientCorrect(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
-		if (!correct)
+		correctCount = PLLOrientCorrectCount(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
+		if (correctCount != 4)
 		{
 			turnF2LEdgeLayer(cubeIdx, crossIdx, cornerIdx, edgeIdx, CubeLayer_Top, Direction_Left, false);
 			dev_PLLOrientLayerMoves[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][idx][roundIdx][4] = U;
 			idx++;
+		}
+
+		edgeMatch = doesPLLOrientEdgeMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
+		cornerMatch = doesPLLOrientCornerMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
+		if (edgeMatch && cornerMatch && correctCount == 3)
+		{
+			hadError = true;
 		}
 	}
 	int i = 0;

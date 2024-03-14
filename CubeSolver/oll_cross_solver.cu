@@ -1,11 +1,5 @@
 #include "oll_cross_solver.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
-
 __device__ bool setOLLCrossMatch(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor, bool match[4])
 {
 	for (int i = 0; i < 4; i++)
@@ -24,12 +18,21 @@ __device__ void OLLCrossSolve(const int cubeIdx, const uint2 crossIdx, const uin
 	const Color targetColor = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLCrossTargetReference.layer][const_OLLCrossTargetReference.cube][const_OLLCrossTargetReference.side];
 	bool match[4];
 	int idx = 0;
+	bool foundSequence = true;
 
-	while (!setOLLCrossMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor, match))
+	while (foundSequence && !setOLLCrossMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor, match))
 	{
 		const Notation* sequence = findOLLCrossSequence(match);
-		executeOLLCrossSequence(cubeIdx, crossIdx, cornerIdx, edgeIdx, sequence, idx);
-		idx++;
+		if (sequence == 0)
+		{
+			hadError = true;
+			foundSequence = false;
+		}
+		else
+		{
+			executeOLLCrossSequence(cubeIdx, crossIdx, cornerIdx, edgeIdx, sequence, idx);
+			idx++;
+		}
 	}
 }
 
