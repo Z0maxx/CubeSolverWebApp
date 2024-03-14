@@ -1,11 +1,5 @@
 #include "f2l_edge_solver.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
-
 __device__ int dev_F2LEdgeRotations[6][4][6][4][6][4][6];
 
 __device__ void solveF2LEdgePiece(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const int idx, const int solveOrderIdx)

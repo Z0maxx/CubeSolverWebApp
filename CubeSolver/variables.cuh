@@ -1,11 +1,19 @@
 #pragma once
 
+#ifdef __INTELLISENSE__
+#define CUDA_KERNEL(...)
+#else
+#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
+#endif
+
 #include <string.h>
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "enums.h"
 #include "structs.h"
+
+extern __managed__ bool hadError;
 
 extern __constant__ const Move const_layerCornerMoves[9][2][4];
 extern __constant__ const Move const_layerEdgeMoves[9][2][4];

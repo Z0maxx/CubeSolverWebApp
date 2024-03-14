@@ -1,12 +1,6 @@
 #include "variables.cuh"
 #include "f2l_edge_rotations.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
-
 __device__ Color dev_tempF2LEdgeColors[6][4][6][4][6][4][6][3][9][6];
 
 __device__ void rotateF2LEdgeLayerColors(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const CubeLayer cubeLayer, const Direction direction)

@@ -1,11 +1,5 @@
 #include "oll_edge_solver.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
-
 __device__ bool setOLLEdgeMatch(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, bool match[4])
 {
 	for (int i = 0; i < 4; i++)

@@ -1,11 +1,5 @@
 #include "cross_solver.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
-
 __device__ int dev_crossRotations[6][4][6];
 
 __device__ void solveCrossPiece(const int cubeIdx, const uint2 crossIdx, const int idx, const int solveOrderIdx)

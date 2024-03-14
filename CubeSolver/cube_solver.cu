@@ -1,19 +1,5 @@
 #include "cube_solver.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
-
-__device__ void printCubes()
-{
-	for (int i = 0; i < 6; i++)
-	{
-		printCube(dev_cubeColors[i]);
-	}
-}
-
 __global__ void startSolveThread()
 {
 	turnCube(1, Direction_Up, false);
@@ -63,6 +49,7 @@ void solve(const int cube[3][9][6])
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	solveF2LEdge();
 	solveOLLCross();
+	if (hadError) return;
 	solveOLLEdge();
 	solvePLLCycle();
 	solvePLLOrient();

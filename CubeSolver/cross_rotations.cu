@@ -1,12 +1,6 @@
 #include "variables.cuh"
 #include "cross_rotations.cuh"
 
-#ifdef __INTELLISENSE__
-#define CUDA_KERNEL(...)
-#else
-#define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
-#endif
-
 __shared__ Color shr_tempCrossColors[4][6][3][9][6];
 
 __device__ void rotateCrossLayerColors(const int cubeIdx, const uint2 crossIdx, const CubeLayer cubeLayer, const Direction direction)
