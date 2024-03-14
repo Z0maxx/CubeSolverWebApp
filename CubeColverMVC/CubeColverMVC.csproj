@@ -16,6 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="CubeColorIdentifier.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="CubeSolver.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
