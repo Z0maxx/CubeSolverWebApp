@@ -1,6 +1,0 @@
-#pragma once
-
-#include "cuda_runtime.h"
-#include "stdio.h"
-
-extern void printError(cudaError_t error);
