@@ -25,7 +25,7 @@ __device__ void OLLCrossSolve(const int cubeIdx, const uint2 crossIdx, const uin
 		const Notation* sequence = findOLLCrossSequence(match);
 		if (sequence == 0)
 		{
-			hadError = true;
+			edgeError = true;
 			foundSequence = false;
 		}
 		else

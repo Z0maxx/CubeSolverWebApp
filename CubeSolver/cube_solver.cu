@@ -49,7 +49,7 @@ void solve(const int cube[3][9][6])
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	solveF2LEdge();
 	solveOLLCross();
-	if (hadError) return;
+	if (edgeError) return;
 	solveOLLEdge();
 	solvePLLCycle();
 	solvePLLOrient();

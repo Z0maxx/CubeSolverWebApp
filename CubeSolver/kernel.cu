@@ -29,5 +29,16 @@ int main(int argc, char* argv[])
             printf("%d ", sequence[i]);
         }
     }
-    printf("%d", hadError);
+    if (edgeError)
+    {
+        printf("flipped-edge");
+    }
+    else if (cornerError)
+    {
+        printf("flipped-corner");
+    }
+    else
+    {
+        printf("no-error");
+    }
 }

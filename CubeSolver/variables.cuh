@@ -13,7 +13,8 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __managed__ bool hadError;
+extern __managed__ bool edgeError;
+extern __managed__ bool cornerError;
 
 extern __constant__ const Move const_layerCornerMoves[9][2][4];
 extern __constant__ const Move const_layerEdgeMoves[9][2][4];
