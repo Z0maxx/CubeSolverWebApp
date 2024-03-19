@@ -12,12 +12,12 @@ __device__ bool doesPLLOrientEdgeMatch(const int cubeIdx, const uint2 crossIdx, 
 
 __device__ bool doesPLLOrientCornerMatch(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx)
 {
-	Color colors[2]{};
-	for (int i = 0; i < 2; i++)
+	Color colors[4]{};
+	for (int i = 0; i < 4; i++)
 	{
 		colors[i] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientCornerMatchReferences[i].layer][const_PLLOrientCornerMatchReferences[i].cube][const_PLLOrientCornerMatchReferences[i].side];
 	}
-	return colors[0] == colors[1];
+	return colors[0] == colors[1] && colors[2] == colors[3];
 }
 
 __device__ int PLLOrientCorrectCount(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor)
@@ -64,9 +64,9 @@ __device__ void PLLOrientSolve(const int cubeIdx, const uint2 crossIdx, const ui
 
 			edgeMatch = doesPLLOrientEdgeMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
 			cornerMatch = doesPLLOrientCornerMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
-			if (edgeMatch && cornerMatch && correctCount == 3)
+			if (edgeMatch && cornerMatch && !currentCorrect && correctCount == 3)
 			{
-				hadError = true;
+				cornerError = true;
 			}
 		}
 		correctCount = PLLOrientCorrectCount(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
@@ -81,7 +81,7 @@ __device__ void PLLOrientSolve(const int cubeIdx, const uint2 crossIdx, const ui
 		cornerMatch = doesPLLOrientCornerMatch(cubeIdx, crossIdx, cornerIdx, edgeIdx);
 		if (edgeMatch && cornerMatch && correctCount == 3)
 		{
-			hadError = true;
+			cornerError = true;
 		}
 	}
 	int i = 0;
