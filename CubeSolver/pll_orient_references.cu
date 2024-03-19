@@ -52,7 +52,7 @@ __constant__ Reference const_PLLOrientEdgeMatchReferences[2] =
 	}
 };
 
-__constant__ Reference const_PLLOrientCornerMatchReferences[2] =
+__constant__ Reference const_PLLOrientCornerMatchReferences[4] =
 {
 	{
 		Layer_Front,
@@ -63,6 +63,16 @@ __constant__ Reference const_PLLOrientCornerMatchReferences[2] =
 		Layer_Front,
 		Cube_Bottom_Left,
 		Side_Front
+	},
+	{
+		Layer_Middle,
+		Cube_Left,
+		Side_Left
+	},
+	{
+		Layer_Front,
+		Cube_Bottom_Left,
+		Side_Left
 	}
 };
 
