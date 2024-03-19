@@ -135,6 +135,7 @@ __global__ void setMovesCountThread()
 		{
 			if (lastIdx != -1)
 			{
+				//U + U' = None and U2 + U2 = None
 				if (abs(current - last) == 1 && (current % 3 == 1 && last % 3 == 2 || current % 3 == 2 && last % 3 == 1) ||
 					current == last && current % 3 == 0)
 				{
@@ -143,6 +144,7 @@ __global__ void setMovesCountThread()
 					count--;
 				}
 
+				//U + U = U2 and U' + U' = U2
 				else if (current == last && current % 3 != 0)
 				{
 					int newMove = current + 2;
@@ -154,12 +156,14 @@ __global__ void setMovesCountThread()
 					dev_moves[idx][lastIdx] = None;
 				}
 
+				//U + U2 = U'
 				else if (abs(current - last) == 2 && (current % 3 == 0 && last % 3 == 1 || current % 3 == 1 && last % 3 == 0))
 				{
 					dev_moves[idx][i] = (Notation)((current < last ? current : last) + 1);
 					dev_moves[idx][lastIdx] = None;
 				}
 
+				//U' + U2 = U
 				else if (abs(current - last) == 1 && (current % 3 == 0 && last % 3 == 2 || current % 3 == 2 && last % 3 == 0))
 				{
 					dev_moves[idx][i] = (Notation)((current < last ? current : last) - 1);
@@ -180,21 +184,18 @@ __global__ void setMovesCountThread()
 				last = dev_moves[idx][i];
 				lastIdx = i;
 			}
-			else if (lastIdx != -1)
+			else if (lastIdx != -1 && dev_moves[idx][lastIdx] == None)
 			{
-				if (dev_moves[idx][lastIdx] == None)
+				int j = lastIdx;
+				while (j > -1 && dev_moves[idx][j] == None)
 				{
-					int j = lastIdx;
-					while (j > -1 && dev_moves[idx][j] == None)
-					{
-						j--;
-					}
-					if (j != -1)
-					{
-						last = dev_moves[idx][j];
-					}
-					lastIdx = j;
+					j--;
 				}
+				if (j != -1)
+				{
+					last = dev_moves[idx][j];
+				}
+				lastIdx = j;
 			}
 		}
 
