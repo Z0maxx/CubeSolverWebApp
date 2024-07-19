@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{07ca0af3-ad82-457d-b346-e04ade30b458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7fbb81f7-2ff7-482a-9274-17b6b85cb7ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="variables.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cube_color_identifier.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="grayscale_filter.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gaussian_blur_filter.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sobel_filter.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="non_maximum_supression.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hysteresis_threshold.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gradient_angle.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hough_transform.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="structs.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hough_image.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inside_image.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="reduce.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="min_max_coords.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cube_colors.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cube_centers.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="color_tester.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enums.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="color_filter.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rgb_cube_color_converter.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mean_shift.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="segment_image.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="center_tester.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="reduce_mean_shifted.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rgb_image_sharpener.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hsl_rgb_converter.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ms_clock.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="kernel.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="variables.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="cube_color_identifier.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="grayscale_filter.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="gaussian_blur_filter.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="sobel_filter.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="non_maximum_supression.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="hysteresis_threshold.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="gradient_angle.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="hough_transform.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="hough_image.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="inside_image.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="reduce.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="min_max_coords.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="cube_colors.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="cube_centers.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="color_tester.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="color_filter.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="rgb_cube_color_converter.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="mean_shift.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="segment_image.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="center_tester.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="reduce_mean_shifted.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="rgb_image_sharpener.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="hsl_rgb_converter.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ms_clock.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>
