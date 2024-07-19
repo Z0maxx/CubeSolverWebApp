@@ -13,7 +13,7 @@ namespace CubeColverMVC.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(CubeColors cubeColors)
+        public IActionResult Index()
         {
             return View();
         }
