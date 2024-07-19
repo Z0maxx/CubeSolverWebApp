@@ -5,5 +5,10 @@
         public int[] Pixels { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+
+        public CubeImage()
+        {
+            Pixels = Array.Empty<int>();
+        }
     }
 }
