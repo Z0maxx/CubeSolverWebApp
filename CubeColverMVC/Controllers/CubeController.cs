@@ -12,9 +12,9 @@ namespace CubeColverMVC.Controllers
     public class CubeController : ControllerBase
     {
         [HttpPost]
-        public IEnumerable<int> Solve(int[][][] cubeColors)
+        public CubeSolve Solve(SolveRequest solveRequest)
         {
-            int[] a = cubeColors.SelectMany(x => x).SelectMany(x => x).Select(x => x).ToArray();
+            int[] a = solveRequest.Colors.SelectMany(x => x).SelectMany(x => x).Select(x => x).ToArray();
             string b = string.Join(' ', a);
             var solver = new Process()
             {
@@ -22,15 +22,31 @@ namespace CubeColverMVC.Controllers
                 {
                     FileName = "CubeSolver.exe",
                     CreateNoWindow = true,
-                    Arguments = $"/c{b}",
+                    Arguments = $"{b} {(solveRequest.WhiteCross ? 1 : 0)}",
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
                 }
             };
             solver.Start();
-            string moves = solver.StandardOutput.ReadToEnd();
-            return moves.Replace("\"", "").Split(' ')[0..^1].Select(x => int.Parse(x));
-
+            string[] result = solver.StandardOutput.ReadToEnd().Replace("\"", "").Split(' ');
+            string error = result[^1];
+            if (error == "flipped-edge")
+            {
+                error = "Flipped Edge";
+            }
+            else if (error == "flipped-corner")
+            {
+                error = "Flipped Corner";
+            }
+            else
+            {
+                error = "";
+            }
+            return new CubeSolve()
+            {
+                Moves = result[0..^1].Select(x => int.Parse(x)),
+                Error = error
+            };
         }
 
         [HttpPost]
