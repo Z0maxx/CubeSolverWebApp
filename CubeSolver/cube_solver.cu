@@ -25,7 +25,7 @@ Color crossCubeColors[6][4][6][3][9][6];
 Color edgeCubeColors[6][4][6][4][6][4][6][3][9][6];
 Color cornerCubeColors[6][4][6][4][6][3][9][6];
 
-void solve(const int cube[3][9][6])
+void solve(int cube[3][9][6])
 {
 	int cubes[6][3][9][6]{};
 	for (int i = 0; i < 6; i++)

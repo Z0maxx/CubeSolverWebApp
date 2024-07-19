@@ -16,4 +16,4 @@
 #include "pll_cycle_solver.cuh"
 #include "pll_orient_solver.cuh"
 
-extern void solve(const int cube[3][9][6]);
+extern void solve(int cube[3][9][6]);

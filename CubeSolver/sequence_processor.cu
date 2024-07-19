@@ -106,7 +106,7 @@ void setMoves()
 	cudaDeviceSynchronize();
 }
 
-__global__ void setMovesCountThread()
+__global__ void setMovesCountThread(bool whiteOnly)
 {
 	const int cubeIdx = blockIdx.x;
 
@@ -125,87 +125,94 @@ __global__ void setMovesCountThread()
 	const int idx = cubeIdx * 13824 + crossIdx.x * 3456 + crossIdx.y * 576 + cornerIdx.x * 144 + cornerIdx.y * 24 + edgeIdx.x * 6 + edgeIdx.y;
 
 	int count = 0;
-	Notation last = None;
-	int lastIdx = -1;
-
-	for (int i = 0; i < 263; i++)
+	if (whiteOnly && dev_F2LEdgeCubeColors[cubeIdx][0][0][0][0][0][0][Layer_Middle][Cube_Bottom][Side_Bottom] != White)
 	{
-		Notation current = dev_moves[idx][i];
-		if (current != None)
+		count = 9999;
+	}
+	else
+	{
+		Notation last = None;
+		int lastIdx = -1;
+
+		for (int i = 0; i < 263; i++)
 		{
-			if (lastIdx != -1)
+			Notation current = dev_moves[idx][i];
+			if (current != None)
 			{
-				//U + U' = None and U2 + U2 = None
-				if (abs(current - last) == 1 && (current % 3 == 1 && last % 3 == 2 || current % 3 == 2 && last % 3 == 1) ||
-					current == last && current % 3 == 0)
+				if (lastIdx != -1)
 				{
-					dev_moves[idx][i] = None;
-					dev_moves[idx][lastIdx] = None;
-					count--;
-				}
-
-				//U + U = U2 and U' + U' = U2
-				else if (current == last && current % 3 != 0)
-				{
-					int newMove = current + 2;
-					if (current % 3 == 2)
+					//U + U' = None and U2 + U2 = None
+					if (abs(current - last) == 1 && (current % 3 == 1 && last % 3 == 2 || current % 3 == 2 && last % 3 == 1) ||
+						current == last && current % 3 == 0)
 					{
-						newMove = current + 1;
+						dev_moves[idx][i] = None;
+						dev_moves[idx][lastIdx] = None;
+						count--;
 					}
-					dev_moves[idx][i] = (Notation)newMove;
-					dev_moves[idx][lastIdx] = None;
-				}
 
-				//U + U2 = U'
-				else if (abs(current - last) == 2 && (current % 3 == 0 && last % 3 == 1 || current % 3 == 1 && last % 3 == 0))
+					//U + U = U2 and U' + U' = U2
+					else if (current == last && current % 3 != 0)
+					{
+						int newMove = current + 2;
+						if (current % 3 == 2)
+						{
+							newMove = current + 1;
+						}
+						dev_moves[idx][i] = (Notation)newMove;
+						dev_moves[idx][lastIdx] = None;
+					}
+
+					//U + U2 = U'
+					else if (abs(current - last) == 2 && (current % 3 == 0 && last % 3 == 1 || current % 3 == 1 && last % 3 == 0))
+					{
+						dev_moves[idx][i] = (Notation)((current < last ? current : last) + 1);
+						dev_moves[idx][lastIdx] = None;
+					}
+
+					//U' + U2 = U
+					else if (abs(current - last) == 1 && (current % 3 == 0 && last % 3 == 2 || current % 3 == 2 && last % 3 == 0))
+					{
+						dev_moves[idx][i] = (Notation)((current < last ? current : last) - 1);
+						dev_moves[idx][lastIdx] = None;
+					}
+
+					else {
+						count++;
+					}
+				}
+				else
 				{
-					dev_moves[idx][i] = (Notation)((current < last ? current : last) + 1);
-					dev_moves[idx][lastIdx] = None;
-				}
-
-				//U' + U2 = U
-				else if (abs(current - last) == 1 && (current % 3 == 0 && last % 3 == 2 || current % 3 == 2 && last % 3 == 0))
-				{
-					dev_moves[idx][i] = (Notation)((current < last ? current : last) - 1);
-					dev_moves[idx][lastIdx] = None;
-				}
-
-				else {
 					count++;
 				}
-			}
-			else
-			{
-				count++;
-			}
 
-			if (dev_moves[idx][i] != None)
-			{
-				last = dev_moves[idx][i];
-				lastIdx = i;
-			}
-			else if (lastIdx != -1 && dev_moves[idx][lastIdx] == None)
-			{
-				int j = lastIdx;
-				while (j > -1 && dev_moves[idx][j] == None)
+				if (dev_moves[idx][i] != None)
 				{
-					j--;
+					last = dev_moves[idx][i];
+					lastIdx = i;
 				}
-				if (j != -1)
+				else if (lastIdx != -1 && dev_moves[idx][lastIdx] == None)
 				{
-					last = dev_moves[idx][j];
+					int j = lastIdx;
+					while (j > -1 && dev_moves[idx][j] == None)
+					{
+						j--;
+					}
+					if (j != -1)
+					{
+						last = dev_moves[idx][j];
+					}
+					lastIdx = j;
 				}
-				lastIdx = j;
 			}
 		}
-
 	}
+
 	dev_movesCount[idx] = count;
 }
 
-void setMovesCount()
+void setMovesCount(bool whiteOnly)
 {
-	setMovesCountThread CUDA_KERNEL(dim3(6, 4, 6), dim3(24, 4, 6))();
+	setMovesCountThread CUDA_KERNEL(dim3(6, 4, 6), dim3(24, 4, 6))(whiteOnly);
 	cudaDeviceSynchronize();
 }
 
@@ -245,9 +252,9 @@ void setSequence()
 		}
 	}
 }
-void findSequence()
+void findSequence(bool whiteOnly)
 {
 	setMoves();
-	setMovesCount();
+	setMovesCount(whiteOnly);
 	setSequence();
 }

@@ -18,7 +18,8 @@ int main(int argc, char* argv[])
     }
     cudaSetDeviceFlags(cudaDeviceScheduleSpin);
     solve(colors);
-    findSequence();
+    bool whiteOnly = atoi(argv[idx]);
+    findSequence(whiteOnly);
     Notation sequence[263]{};
     cudaMemcpyFromSymbol(sequence, dev_sequence, sizeof(sequence));
     for (int i = 0; i < 263; i++)

@@ -8,4 +8,4 @@
 #include "structs.h"
 #include "device_atomic_functions.h"
 
-extern void findSequence();
+extern void findSequence(bool whiteOnly);
