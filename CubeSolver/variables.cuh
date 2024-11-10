@@ -13,6 +13,9 @@
 #include "enums.h"
 #include "structs.h"
 
+__device__ __host__ const int solveCount = 82944;
+__device__ __host__ const int maxStepCount = 263;
+
 extern __managed__ bool edgeError;
 extern __managed__ bool cornerError;
 
@@ -50,5 +53,6 @@ extern __device__ Notation dev_OLLEdgeLayerMoves[6][4][6][4][6][4][6][16];
 extern __device__ Notation dev_PLLCycleLayerMoves[6][4][6][4][6][4][6][3][8];
 extern __device__ Notation dev_PLLOrientLayerMoves[6][4][6][4][6][4][6][4][4][5];
 
-extern __device__ Notation dev_sequence[263];
-extern __device__ Notation dev_moves[82944][263];
+extern __device__ Notation dev_sequence[maxStepCount];
+extern __device__ Notation dev_moves[solveCount][maxStepCount];
+

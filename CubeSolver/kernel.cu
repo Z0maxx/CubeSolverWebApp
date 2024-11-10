@@ -20,9 +20,9 @@ int main(int argc, char* argv[])
     solve(colors);
     bool whiteOnly = atoi(argv[idx]);
     findSequence(whiteOnly);
-    Notation sequence[263]{};
+    Notation sequence[maxStepCount]{};
     cudaMemcpyFromSymbol(sequence, dev_sequence, sizeof(sequence));
-    for (int i = 0; i < 263; i++)
+    for (int i = 0; i < maxStepCount; i++)
     {
         if (sequence[i] != None)
         {

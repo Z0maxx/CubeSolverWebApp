@@ -2787,5 +2787,5 @@ __device__ Notation dev_OLLEdgeLayerMoves[6][4][6][4][6][4][6][16];
 __device__ Notation dev_PLLCycleLayerMoves[6][4][6][4][6][4][6][3][8];
 __device__ Notation dev_PLLOrientLayerMoves[6][4][6][4][6][4][6][4][4][5];
 
-__device__ Notation dev_sequence[263];
-__device__ Notation dev_moves[82944][263];
+__device__ Notation dev_sequence[maxStepCount];
+__device__ Notation dev_moves[solveCount][maxStepCount];
