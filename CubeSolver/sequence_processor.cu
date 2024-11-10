@@ -1,4 +1,5 @@
 #include "sequence_processor.cuh"
+#include <stdio.h>
 
 #ifdef __INTELLISENSE__
 #define CUDA_KERNEL(...)
@@ -6,8 +7,11 @@
 #define CUDA_KERNEL(...) <<< __VA_ARGS__ >>>
 #endif
 
-__device__ int dev_movesCountIdx[82944];
-__device__ int dev_movesCount[82944];
+__device__ int dev_movesCountIdx[solveCount];
+__device__ int dev_movesCount[solveCount];
+
+__device__ int dev_tempMovesCount[solveCount];
+__device__ int dev_tempMovesCountIdx[solveCount];
 
 __global__ void setMovesThread()
 {
@@ -134,7 +138,7 @@ __global__ void setMovesCountThread(bool whiteOnly)
 		Notation last = None;
 		int lastIdx = -1;
 
-		for (int i = 0; i < 263; i++)
+		for (int i = 0; i < maxStepCount; i++)
 		{
 			Notation current = dev_moves[idx][i];
 			if (current != None)
@@ -216,42 +220,58 @@ void setMovesCount(bool whiteOnly)
 	cudaDeviceSynchronize();
 }
 
-__global__ void setSequenceThread(const int needed)
+__device__ void setSequenceInner(int needed, int idx, int idx1, int idx2, int* dev_fromMovesCount, int* dev_toMovesCount, int* dev_fromMovesCountIdx, int* dev_toMovesCountIdx)
 {
-	const int idx = blockIdx.x * 1024 + threadIdx.x;
-	if (idx < needed)
-	{
-		const int idx1 = idx * 2;
-		const int idx2 = idx1 + 1;
-		const int a = dev_movesCount[idx1];
-		const int b = dev_movesCount[idx2];
-		const bool first = a < b;
-		dev_movesCount[idx] = first ? a : b;
-		dev_movesCountIdx[idx] = first ? dev_movesCountIdx[idx1] : dev_movesCountIdx[idx2];
-	}
+	int a = dev_fromMovesCount[idx1];
+	int b = dev_fromMovesCount[idx2];
+	bool first = a < b;
+	int movesCountIdx = first ? dev_fromMovesCountIdx[idx1] : dev_fromMovesCountIdx[idx2];
+	dev_toMovesCount[idx] = first ? a : b;
+	dev_toMovesCountIdx[idx] = movesCountIdx;
 	if (needed == 1)
 	{
-		memcpy(dev_sequence, dev_moves[dev_movesCountIdx[0]], sizeof(dev_sequence));
+		memcpy(dev_sequence, dev_moves[movesCountIdx], sizeof(dev_sequence));
+	}
+}
+
+__global__ void setSequenceThread(const int needed, bool fromTemp)
+{
+	int idx = blockIdx.x * 1024 + threadIdx.x;
+	if (idx < needed)
+	{
+		int idx1 = idx * 2;
+		int idx2 = idx1 + 1;
+		if (fromTemp)
+		{
+			setSequenceInner(needed, idx, idx1, idx2, dev_tempMovesCount, dev_movesCount, dev_tempMovesCountIdx, dev_movesCountIdx);
+		}
+		else
+		{
+			setSequenceInner(needed, idx, idx1, idx2, dev_movesCount, dev_tempMovesCount, dev_movesCountIdx, dev_tempMovesCountIdx);
+		}
 	}
 }
 
 void setSequence()
 {
 	int needed = 41472;
+	bool fromTemp = false;
 	while (needed != 0)
 	{
-		setSequenceThread CUDA_KERNEL(ceil((double)needed / 1024), needed > 1024 ? 1024 : needed)(needed);
+		setSequenceThread CUDA_KERNEL((int)ceil((double)needed / 1024), needed > 1024 ? 1024 : needed)(needed, fromTemp);
 		cudaDeviceSynchronize();
 		if (needed > 1)
 		{
-			needed = ceil((double)needed / 2);
+			needed = (int)ceil((double)needed / 2);
 		}
 		else
 		{
 			needed = 0;
 		}
+		fromTemp = !fromTemp;
 	}
 }
+
 void findSequence(bool whiteOnly)
 {
 	setMoves();
