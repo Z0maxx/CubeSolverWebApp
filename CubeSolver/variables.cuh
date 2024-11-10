@@ -32,13 +32,13 @@ extern __constant__ const Side const_faceAlwaysMoves[3][2];
 
 extern __constant__ const MoveIdx const_cubeTurnMoveIdxs[7];
 
-extern __constant__ const SolvePiece solvePieces[4];
-extern __constant__ const int solveOrders[4][6][4];
+extern __constant__ const SolvePiece const_solvePieces[4];
+extern __constant__ const int const_solveOrders[4][6][4];
 
-extern __device__ Color dev_cubeColors[6][3][9][6];
-extern __device__ Color dev_crossCubeColors[6][4][6][3][9][6];
-extern __device__ Color dev_F2LCornerCubeColors[6][4][6][4][6][3][9][6];
-extern __device__ Color dev_F2LEdgeCubeColors[6][4][6][4][6][4][6][3][9][6];
+extern __device__ Color dev_colors[6][3][9][6];
+extern __device__ Color dev_crossColors[6][4][6][3][9][6];
+extern __device__ Color dev_F2LCornerColors[6][4][6][4][6][3][9][6];
+extern __device__ Color dev_F2LEdgeColors[6][4][6][4][6][4][6][3][9][6];
 
 extern __device__ Notation dev_cubeRotationMoves[6];
 extern __device__ Notation dev_crossRotationMoves[6][4][6][4];

@@ -15,11 +15,11 @@ __device__ void solveF2LEdgePiece(const int cubeIdx, const uint2 crossIdx, const
 	Color colors[2]{};
 	for (int i = 0; i < 2; i++)
 	{
-		colors[i] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_F2LEdgeReferences[i].layer][const_F2LEdgeReferences[i].cube][const_F2LEdgeReferences[i].side];
+		colors[i] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_F2LEdgeReferences[i].layer][const_F2LEdgeReferences[i].cube][const_F2LEdgeReferences[i].side];
 	}
-	const uint2 edge = findEdge(dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y], colors, 8);
-	const Color targetColor = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_F2LEdgeTargetReference.layer][const_F2LEdgeTargetReference.cube][const_F2LEdgeTargetReference.side];
-	const Notation* sequence = findF2LEdgeSequence(edge, dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][edge.x][edge.y], targetColor);
+	const uint2 edge = findEdge(dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y], colors, 8);
+	const Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_F2LEdgeTargetReference.layer][const_F2LEdgeTargetReference.cube][const_F2LEdgeTargetReference.side];
+	const Notation* sequence = findF2LEdgeSequence(edge, dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][edge.x][edge.y], targetColor);
 	executeF2LEdgeSequence(cubeIdx, crossIdx, cornerIdx, edgeIdx, sequence, idx);
 }
 
@@ -41,7 +41,7 @@ __global__ void solveF2LEdgeThread()
 
 	for (int i = 0; i < 4; i++)
 	{
-		solveF2LEdgePiece(cubeIdx, crossIdx, cornerIdx, edgeIdx, i, solveOrders[edgeIdx.x][edgeIdx.y][i]);
+		solveF2LEdgePiece(cubeIdx, crossIdx, cornerIdx, edgeIdx, i, const_solveOrders[edgeIdx.x][edgeIdx.y][i]);
 	}
 }
 
@@ -49,7 +49,9 @@ __global__ void copyF2LEdgeColorThread()
 {
 	for (int i = 0; i < 6; i++)
 	{
-		memcpy(dev_F2LEdgeCubeColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y][threadIdx.z][i], dev_F2LCornerCubeColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y], sizeof(dev_F2LCornerCubeColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y]));
+		memcpy(dev_F2LEdgeColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y][threadIdx.z][i], dev_F2LCornerColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y], sizeof(dev_F2LCornerColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y]));
+		memcpy(dev_tempF2LEdgeColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y][threadIdx.z][i], dev_F2LCornerColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y], sizeof(dev_F2LCornerColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y]));
+
 	}
 }
 

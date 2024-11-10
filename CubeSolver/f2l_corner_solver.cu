@@ -14,11 +14,11 @@ __device__ void solveF2LCornerPiece(const int cubeIdx, const uint2 crossIdx, con
 	Color colors[3]{};
 	for (int i = 0; i < 3; i++)
 	{
-		colors[i] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][const_F2LCornerReferences[i].layer][const_F2LCornerReferences[i].cube][const_F2LCornerReferences[i].side];
+		colors[i] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][const_F2LCornerReferences[i].layer][const_F2LCornerReferences[i].cube][const_F2LCornerReferences[i].side];
 	}
-	const uint2 corner = findCorner(dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], colors, 8);
-	const Color targetColor = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][const_F2LCornerTargetReference.layer][const_F2LCornerTargetReference.cube][const_F2LCornerTargetReference.side];
-	const Notation* sequence = findCornerSequence(const_F2LCornerSequences, corner, dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][corner.x][corner.y], targetColor);
+	const uint2 corner = findCorner(dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], colors, 8);
+	const Color targetColor = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][const_F2LCornerTargetReference.layer][const_F2LCornerTargetReference.cube][const_F2LCornerTargetReference.side];
+	const Notation* sequence = findCornerSequence(const_F2LCornerSequences, corner, dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][corner.x][corner.y], targetColor);
 	executeF2LCornerSequence(cubeIdx, crossIdx, cornerIdx, sequence, idx);
 }
 
@@ -36,13 +36,13 @@ __global__ void solveF2LCornerThread()
 
 	for (int i = 0; i < 4; i++)
 	{
-		solveF2LCornerPiece(cubeIdx, crossIdx, cornerIdx, i, solveOrders[cornerIdx.x][cornerIdx.y][i]);
+		solveF2LCornerPiece(cubeIdx, crossIdx, cornerIdx, i, const_solveOrders[cornerIdx.x][cornerIdx.y][i]);
 	}
 }
 
 __global__ void copyF2LCornerColorThread()
 {
-	memcpy(dev_F2LCornerCubeColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y], dev_crossCubeColors[blockIdx.x][blockIdx.y][blockIdx.z], sizeof(dev_crossCubeColors[blockIdx.x][blockIdx.y][blockIdx.z]));
+	memcpy(dev_F2LCornerColors[blockIdx.x][blockIdx.y][blockIdx.z][threadIdx.x][threadIdx.y], dev_crossColors[blockIdx.x][blockIdx.y][blockIdx.z], sizeof(dev_crossColors[blockIdx.x][blockIdx.y][blockIdx.z]));
 }
 
 void solveF2LCorner()

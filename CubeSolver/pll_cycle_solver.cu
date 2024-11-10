@@ -7,9 +7,9 @@ __device__ bool setPLLCycleMatch(const int cubeIdx, const uint2 crossIdx, const 
 		Color colors[3]{};
 		for (int j = 0; j < 3; j++)
 		{
-			colors[j] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLCycleReferences[i][j].layer][const_PLLCycleReferences[i][j].cube][const_PLLCycleReferences[i][j].side];
+			colors[j] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLCycleReferences[i][j].layer][const_PLLCycleReferences[i][j].cube][const_PLLCycleReferences[i][j].side];
 		}
-		const uint2 corner = findCorner(dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y], colors, 4);
+		const uint2 corner = findCorner(dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y], colors, 4);
 		match[i] = corner.x == const_PLLCycleCubeReferences[i].layer && corner.y == const_PLLCycleCubeReferences[i].cube;
 	}
 	int j = 0;

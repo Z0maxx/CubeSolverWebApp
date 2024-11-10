@@ -5,7 +5,7 @@ __shared__ Color shr_tempF2LCornerColors[4][6][3][9][6];
 
 __device__ void rotateF2LCornerLayerColors(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const CubeLayer cubeLayer, const Direction direction)
 {
-    memcpy(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y], dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], sizeof(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y]));
+    memcpy(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y], dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], sizeof(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y]));
 
     const int alwaysMoveIdx = cubeLayer / 3;
     const int directionIdx = direction % 2;
@@ -16,22 +16,22 @@ __device__ void rotateF2LCornerLayerColors(const int cubeIdx, const uint2 crossI
 
         for (int y = 0; y < 2; y++)
         {
-            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][cornerMove.targetSides[y]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][cornerMove.originSides[y]];
-            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][const_layerAlwaysMoves[alwaysMoveIdx][y]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][const_layerAlwaysMoves[alwaysMoveIdx][y]];
+            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][cornerMove.targetSides[y]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][cornerMove.originSides[y]];
+            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][const_layerAlwaysMoves[alwaysMoveIdx][y]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][const_layerAlwaysMoves[alwaysMoveIdx][y]];
         }
     }
 
     for (int x = 0; x < 4; x++)
     {
         const Move edgeMove = const_layerEdgeMoves[cubeLayer][directionIdx][x];
-        shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
+        shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
         for (int y = 0; y < 2; y++)
         {
-            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][const_layerAlwaysMoves[alwaysMoveIdx][y]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][const_layerAlwaysMoves[alwaysMoveIdx][y]];
+            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][const_layerAlwaysMoves[alwaysMoveIdx][y]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][const_layerAlwaysMoves[alwaysMoveIdx][y]];
         }
     }
 
-    memcpy(dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y], sizeof(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y]));
+    memcpy(dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y], sizeof(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y]));
 }
 
 __device__ void rotateF2LCornerFaceColors(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const MoveIdx moveIdx)
@@ -45,8 +45,8 @@ __device__ void rotateF2LCornerFaceColors(const int cubeIdx, const uint2 crossId
         const Move cornerMove = const_faceCornerMoves[moveIdx][x];
         for (int y = 0; y < 2; y++)
         {
-            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][cornerMove.targetSides[y]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][cornerMove.originSides[y]];
-            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][const_faceAlwaysMoves[alwaysMoveIdx][y]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][const_faceAlwaysMoves[alwaysMoveIdx][y]];
+            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][cornerMove.targetSides[y]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][cornerMove.originSides[y]];
+            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][cornerMove.targetLayer][cornerMove.targetCube][const_faceAlwaysMoves[alwaysMoveIdx][y]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][cornerMove.originLayer][cornerMove.originCube][const_faceAlwaysMoves[alwaysMoveIdx][y]];
         }
     }
 
@@ -55,29 +55,29 @@ __device__ void rotateF2LCornerFaceColors(const int cubeIdx, const uint2 crossId
         const Move edgeMove = const_faceEdgeMoves[moveIdx][x];
         if (x < 8)
         {
-            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
+            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
         }
         else
         {
             for (int y = 0; y < 2; y++)
             {
-                shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[y]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[y]];
+                shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[y]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[y]];
             }
         }
 
         for (int i = 0; i < 2; i++)
         {
-            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][const_faceAlwaysMoves[alwaysMoveIdx][i]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][const_faceAlwaysMoves[alwaysMoveIdx][i]];
+            shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][edgeMove.targetLayer][edgeMove.targetCube][const_faceAlwaysMoves[alwaysMoveIdx][i]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeMove.originLayer][edgeMove.originCube][const_faceAlwaysMoves[alwaysMoveIdx][i]];
         }
     }
 
     for (int x = 0; x < 6; x++)
     {
         const Move centerMove = const_faceCenterMoves[moveIdx][x];
-        shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][centerMove.targetLayer][centerMove.targetCube][centerMove.targetSides[0]] = dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][centerMove.originLayer][centerMove.originCube][centerMove.originSides[0]];
+        shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y][centerMove.targetLayer][centerMove.targetCube][centerMove.targetSides[0]] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][centerMove.originLayer][centerMove.originCube][centerMove.originSides[0]];
     }
 
-    memcpy(dev_F2LCornerCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y], sizeof(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y]));
+    memcpy(dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y], sizeof(shr_tempF2LCornerColors[cornerIdx.x][cornerIdx.y]));
 }
 
 __device__ void turnF2LCornerLayer(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const CubeLayer cubeLayer, const Direction direction, const bool twice) {

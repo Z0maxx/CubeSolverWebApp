@@ -4,7 +4,7 @@ __device__ bool setOLLCrossMatch(const int cubeIdx, const uint2 crossIdx, const 
 {
 	for (int i = 0; i < 4; i++)
 	{
-		match[i] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLCrossReferences[i].layer][const_OLLCrossReferences[i].cube][const_OLLCrossReferences[i].side] == targetColor;
+		match[i] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLCrossReferences[i].layer][const_OLLCrossReferences[i].cube][const_OLLCrossReferences[i].side] == targetColor;
 	}
 	int j = 0;
 	while (j < 4 && match[j])
@@ -15,7 +15,7 @@ __device__ bool setOLLCrossMatch(const int cubeIdx, const uint2 crossIdx, const 
 }
 __device__ void OLLCrossSolve(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx)
 {
-	const Color targetColor = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLCrossTargetReference.layer][const_OLLCrossTargetReference.cube][const_OLLCrossTargetReference.side];
+	const Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLCrossTargetReference.layer][const_OLLCrossTargetReference.cube][const_OLLCrossTargetReference.side];
 	bool match[4];
 	int idx = 0;
 	bool foundSequence = true;

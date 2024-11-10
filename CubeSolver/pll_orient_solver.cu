@@ -5,7 +5,7 @@ __device__ bool doesPLLOrientEdgeMatch(const int cubeIdx, const uint2 crossIdx, 
 	Color colors[2]{};
 	for (int i = 0; i < 2; i++)
 	{
-		colors[i] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientEdgeMatchReferences[i].layer][const_PLLOrientEdgeMatchReferences[i].cube][const_PLLOrientEdgeMatchReferences[i].side];
+		colors[i] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientEdgeMatchReferences[i].layer][const_PLLOrientEdgeMatchReferences[i].cube][const_PLLOrientEdgeMatchReferences[i].side];
 	}
 	return colors[0] == colors[1];
 }
@@ -15,7 +15,7 @@ __device__ bool doesPLLOrientCornerMatch(const int cubeIdx, const uint2 crossIdx
 	Color colors[4]{};
 	for (int i = 0; i < 4; i++)
 	{
-		colors[i] = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientCornerMatchReferences[i].layer][const_PLLOrientCornerMatchReferences[i].cube][const_PLLOrientCornerMatchReferences[i].side];
+		colors[i] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientCornerMatchReferences[i].layer][const_PLLOrientCornerMatchReferences[i].cube][const_PLLOrientCornerMatchReferences[i].side];
 	}
 	return colors[0] == colors[1] && colors[2] == colors[3];
 }
@@ -23,7 +23,7 @@ __device__ bool doesPLLOrientCornerMatch(const int cubeIdx, const uint2 crossIdx
 __device__ int PLLOrientCorrectCount(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor)
 {
 	int j = 0;
-	while (j < 4 && dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientTargetReferences[j].layer][const_PLLOrientTargetReferences[j].cube][const_PLLOrientTargetReferences[j].side] == targetColor)
+	while (j < 4 && dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientTargetReferences[j].layer][const_PLLOrientTargetReferences[j].cube][const_PLLOrientTargetReferences[j].side] == targetColor)
 	{
 		j++;
 	}
@@ -32,17 +32,17 @@ __device__ int PLLOrientCorrectCount(const int cubeIdx, const uint2 crossIdx, co
 
 __device__ bool isPLLOrientCurrentCorrect(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor)
 {
-	return dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientCurrentTargetReference.layer][const_PLLOrientCurrentTargetReference.cube][const_PLLOrientCurrentTargetReference.side] == targetColor;
+	return dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientCurrentTargetReference.layer][const_PLLOrientCurrentTargetReference.cube][const_PLLOrientCurrentTargetReference.side] == targetColor;
 }
 
 __device__ bool isPLLOrientTopLayerCorrect(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const Color targetColor)
 {
-	return dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientFinalReferences[0].layer][const_PLLOrientFinalReferences[0].cube][const_PLLOrientFinalReferences[0].side] == targetColor;
+	return dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientFinalReferences[0].layer][const_PLLOrientFinalReferences[0].cube][const_PLLOrientFinalReferences[0].side] == targetColor;
 }
 
 __device__ void PLLOrientSolve(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx)
 {
-	Color targetColor = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientReference.layer][const_PLLOrientReference.cube][const_PLLOrientReference.side];
+	Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientReference.layer][const_PLLOrientReference.cube][const_PLLOrientReference.side];
 	int idx = 0;
 	int roundIdx = 0;
 	int correctCount = PLLOrientCorrectCount(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor);
@@ -85,7 +85,7 @@ __device__ void PLLOrientSolve(const int cubeIdx, const uint2 crossIdx, const ui
 		}
 	}
 	int i = 0;
-	targetColor = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientFinalReferences[1].layer][const_PLLOrientFinalReferences[1].cube][const_PLLOrientFinalReferences[1].side];
+	targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_PLLOrientFinalReferences[1].layer][const_PLLOrientFinalReferences[1].cube][const_PLLOrientFinalReferences[1].side];
 	while (!isPLLOrientTopLayerCorrect(cubeIdx, crossIdx, cornerIdx, edgeIdx, targetColor))
 	{
 		turnF2LEdgeLayer(cubeIdx, crossIdx, cornerIdx, edgeIdx, CubeLayer_Top, Direction_Left, false);

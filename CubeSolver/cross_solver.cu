@@ -14,11 +14,11 @@ __device__ void solveCrossPiece(const int cubeIdx, const uint2 crossIdx, const i
 	Color colors[2]{};
 	for (int i = 0; i < 2; i++)
 	{
-		colors[i] = dev_crossCubeColors[cubeIdx][crossIdx.x][crossIdx.y][const_crossReferences[i].layer][const_crossReferences[i].cube][const_crossReferences[i].side];
+		colors[i] = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][const_crossReferences[i].layer][const_crossReferences[i].cube][const_crossReferences[i].side];
 	}
-	const uint2 edge = findEdge(dev_crossCubeColors[cubeIdx][crossIdx.x][crossIdx.y], colors, 12);
-	const Color targetColor = dev_crossCubeColors[cubeIdx][crossIdx.x][crossIdx.y][const_crossTargetReference.layer][const_crossTargetReference.cube][const_crossTargetReference.side];
-	const Notation* sequence = findCrossSequence(edge, dev_crossCubeColors[cubeIdx][crossIdx.x][crossIdx.y][edge.x][edge.y], targetColor);
+	const uint2 edge = findEdge(dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y], colors, 12);
+	const Color targetColor = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][const_crossTargetReference.layer][const_crossTargetReference.cube][const_crossTargetReference.side];
+	const Notation* sequence = findCrossSequence(edge, dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][edge.x][edge.y], targetColor);
 	executeCrossSequence(cubeIdx, crossIdx, sequence, idx);
 }
 
@@ -31,13 +31,13 @@ __global__ void solveCrossThread()
 
 	for (int i = 0; i < 4; i++)
 	{
-		solveCrossPiece(cubeIdx, crossIdx, i, solveOrders[crossIdx.x][crossIdx.y][i]);
+		solveCrossPiece(cubeIdx, crossIdx, i, const_solveOrders[crossIdx.x][crossIdx.y][i]);
 	}
 }
 
 __global__ void copyCrossColorThread()
 {
-	memcpy(dev_crossCubeColors[threadIdx.x][threadIdx.y][threadIdx.z], dev_cubeColors[threadIdx.x], sizeof(dev_cubeColors[threadIdx.x]));
+	memcpy(dev_crossColors[threadIdx.x][threadIdx.y][threadIdx.z], dev_colors[threadIdx.x], sizeof(dev_colors[threadIdx.x]));
 }
 
 void solveCross()

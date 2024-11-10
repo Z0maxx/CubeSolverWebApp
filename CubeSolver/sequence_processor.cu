@@ -129,7 +129,7 @@ __global__ void setMovesCountThread(bool whiteOnly)
 	const int idx = cubeIdx * 13824 + crossIdx.x * 3456 + crossIdx.y * 576 + cornerIdx.x * 144 + cornerIdx.y * 24 + edgeIdx.x * 6 + edgeIdx.y;
 
 	int count = 0;
-	if (whiteOnly && dev_F2LEdgeCubeColors[cubeIdx][0][0][0][0][0][0][Layer_Middle][Cube_Bottom][Side_Bottom] != White)
+	if (whiteOnly && dev_F2LEdgeColors[cubeIdx][0][0][0][0][0][0][Layer_Middle][Cube_Bottom][Side_Bottom] != White)
 	{
 		count = 9999;
 	}

@@ -1,6 +1,6 @@
 #include "solve_rotation_finder.cuh"
 
-__constant__ SolvePiece solvePieces[4] =
+__constant__ SolvePiece const_solvePieces[4] =
 {
 	{
 		{
@@ -108,9 +108,9 @@ __device__ const SolveRotation findSolveRotation(const int rotation, const int s
 {
 	for (int i = 0; i < 3; i++)
 	{
-		if (solvePieces[solveOrderIdx].solveRotations[i].rotation == rotation)
+		if (const_solvePieces[solveOrderIdx].solveRotations[i].rotation == rotation)
 		{
-			return solvePieces[solveOrderIdx].solveRotations[i];
+			return const_solvePieces[solveOrderIdx].solveRotations[i];
 		}
 	}
 	return { 99 };

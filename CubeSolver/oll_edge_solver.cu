@@ -4,8 +4,8 @@ __device__ bool setOLLEdgeMatch(const int cubeIdx, const uint2 crossIdx, const u
 {
 	for (int i = 0; i < 4; i++)
 	{
-		const Color color = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeReferences[i].layer][const_OLLEdgeReferences[i].cube][const_OLLEdgeReferences[i].side];
-		const Color targetColor = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeTargetReferences[i].layer][const_OLLEdgeTargetReferences[i].cube][const_OLLEdgeTargetReferences[i].side];
+		const Color color = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeReferences[i].layer][const_OLLEdgeReferences[i].cube][const_OLLEdgeReferences[i].side];
+		const Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeTargetReferences[i].layer][const_OLLEdgeTargetReferences[i].cube][const_OLLEdgeTargetReferences[i].side];
 		match[i] = color == targetColor;
 	}
 	int j = 0;
@@ -20,9 +20,9 @@ __device__ void setOLLEdgeNear(const int cubeIdx, const uint2 crossIdx, const ui
 {
 	for (int i = 0; i < 4; i++)
 	{
-		const Color origin = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].origin.layer][const_OLLEdgeNearReferences[i].origin.cube][const_OLLEdgeNearReferences[i].origin.side];
-		const Color leftTarget = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].leftTarget.layer][const_OLLEdgeNearReferences[i].leftTarget.cube][const_OLLEdgeNearReferences[i].leftTarget.side];
-		const Color rightTarget = dev_F2LEdgeCubeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].rightTarget.layer][const_OLLEdgeNearReferences[i].rightTarget.cube][const_OLLEdgeNearReferences[i].rightTarget.side];
+		const Color origin = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].origin.layer][const_OLLEdgeNearReferences[i].origin.cube][const_OLLEdgeNearReferences[i].origin.side];
+		const Color leftTarget = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].leftTarget.layer][const_OLLEdgeNearReferences[i].leftTarget.cube][const_OLLEdgeNearReferences[i].leftTarget.side];
+		const Color rightTarget = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].rightTarget.layer][const_OLLEdgeNearReferences[i].rightTarget.cube][const_OLLEdgeNearReferences[i].rightTarget.side];
 		near[i] = origin == leftTarget || origin == rightTarget;
 	}
 }

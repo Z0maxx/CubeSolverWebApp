@@ -42,7 +42,7 @@ void solve(int cube[3][9][6])
 		}
 	}
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
-	cudaMemcpyToSymbol(dev_cubeColors, cubes, sizeof(cubes));
+	cudaMemcpyToSymbol(dev_colors, cubes, sizeof(cubes));
 	startSolve();
 	solveCross();
 	solveF2LCorner();
