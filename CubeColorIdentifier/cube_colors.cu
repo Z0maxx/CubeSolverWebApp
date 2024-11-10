@@ -26,9 +26,17 @@ bool compCenterX(Center center1, Center center2)
 	return center1.x < center2.x;
 }
 
-std::vector<std::string> cubeColors(std::vector<Center> centers)
+std::vector<std::string> cubeColors(std::vector<Center> testedCenters)
 {
 	std::vector<std::string> colorNames(9);
+	std::vector<Center> centers;
+	for (const Center& center : testedCenters)
+	{
+		if (center.accepted)
+		{
+			centers.push_back(center);
+		}
+	}
 
 	std::vector<std::vector<Center>> layers;
 	int diffAvg = centers[1].y - centers[0].y;

@@ -120,7 +120,7 @@ __global__ void setAcceptedLines(HoughLine* dev_lines, bool* dev_accepted, int l
 		HoughLine line2 = dev_lines[i];
 		int rhoDiff1 = getRhoDiff(line1, line2);
 		int thetaDiff1 = getThetaDiff(line1, line2);
-		if (thetaDiff1 < 8)
+		if (thetaDiff1 < 4)
 		{
 			int j = i + 1;
 			while (!accepted && j < length)
@@ -128,7 +128,7 @@ __global__ void setAcceptedLines(HoughLine* dev_lines, bool* dev_accepted, int l
 				HoughLine line3 = dev_lines[j];
 				int rhoDiff2 = getRhoDiff(line2, line3);
 				int thetaDiff2 = getThetaDiff(line2, line3);
-				if (abs(rhoDiff1 - rhoDiff2) < rhoDiff1 * 0.15 && thetaDiff2 < 5)
+				if (abs(rhoDiff1 - rhoDiff2) < rhoDiff1 * 0.18 && thetaDiff2 < 4)
 				{
 					int k = j + 1;
 					while (!accepted && k < length)
@@ -136,7 +136,7 @@ __global__ void setAcceptedLines(HoughLine* dev_lines, bool* dev_accepted, int l
 						HoughLine line4 = dev_lines[k];
 						int rhoDiff3 = getRhoDiff(line3, line4);
 						int thetaDiff3 = getThetaDiff(line3, line4);
-						if (abs(rhoDiff2 - rhoDiff3) < rhoDiff2 * 0.15 && thetaDiff3 < 5)
+						if (abs(rhoDiff2 - rhoDiff3) < rhoDiff2 * 0.18 && thetaDiff3 < 4)
 						{
 							accepted = true;
 							dev_accepted[lineIdx] = true;
@@ -156,6 +156,7 @@ __global__ void setAcceptedLines(HoughLine* dev_lines, bool* dev_accepted, int l
 
 int** houghImage(std::vector<HoughLine> houghLines, int** image, int** thresholded, int** dev_thresholded)
 {
+	std::sort(houghLines.begin(), houghLines.end(), compHough);
 	for (int i = 0; i < houghLines.size(); i++)
 	{
 		int rho = houghLines[i].rho;
@@ -165,33 +166,6 @@ int** houghImage(std::vector<HoughLine> houghLines, int** image, int** threshold
 			houghLines[i].theta += 180;
 		}
 	}
-	std::sort(houghLines.begin(), houghLines.end(), compHough);
-	std::vector<HoughLine> uniqueLines = groupLines(houghLines, 20, 10);
-
-	int length = uniqueLines.size();
-	int size = length * sizeof(HoughLine);
-	HoughLine* dev_lines;
-	cudaMalloc(&dev_lines, size);
-	HoughLine* lines = (HoughLine*)malloc(size);
-	for (int i = 0; i < length; i++)
-	{
-		lines[i] = uniqueLines[i];
-	}
-	cudaMemcpy(dev_lines, lines, size, cudaMemcpyHostToDevice);
-
-	bool* dev_accepted;
-	cudaMalloc(&dev_accepted, length * sizeof(bool));
-	setAcceptedLines CUDA_KERNEL(1, length - 3)(dev_lines, dev_accepted, length);
-	cudaDeviceSynchronize();
-
-	HoughLine* dev_houghLines;
-	cudaMalloc(&dev_houghLines, size);
-	HoughLine* uniqueHoughLines = (HoughLine*)malloc(size);
-	for (int i = 0; i < length; i++)
-	{
-		uniqueHoughLines[i] = uniqueLines[i];
-	}
-	cudaMemcpy(dev_houghLines, uniqueHoughLines, size, cudaMemcpyHostToDevice);
 
 	int** dev_image;
 	cudaMalloc(&dev_image, heightSize);
@@ -201,8 +175,74 @@ int** houghImage(std::vector<HoughLine> houghLines, int** image, int** threshold
 	}
 	cudaMemcpy(dev_image, image, heightSize, cudaMemcpyHostToDevice);
 
-	houghImageLine CUDA_KERNEL(1, length)(dev_image, dev_houghLines, dev_accepted);
-	cudaDeviceSynchronize();
+	int maxCount = 0;
+	HoughLine* dev_lines1;
+	HoughLine* dev_lines2;
+	bool* dev_accepted1;
+	bool* dev_accepted2;
+	int length1 = 0;
+	int length2 = 0;
+	for (int tryIdx = 0; tryIdx < 2; tryIdx++)
+	{
+		std::vector<HoughLine> uniqueLines = groupLines(houghLines, tryIdx == 0 ? 22 : 20, tryIdx == 0 ? 8 : 10);
+
+		int length = uniqueLines.size();
+		int size = length * sizeof(HoughLine);
+		HoughLine* dev_lines;
+		cudaMalloc(&dev_lines, size);
+		HoughLine* lines = (HoughLine*)malloc(size);
+		for (int i = 0; i < length; i++)
+		{
+			lines[i] = uniqueLines[i];
+		}
+		cudaMemcpy(dev_lines, lines, size, cudaMemcpyHostToDevice);
+
+
+		bool* dev_accepted;
+		cudaMalloc(&dev_accepted, length * sizeof(bool));
+		setAcceptedLines CUDA_KERNEL(1, length)(dev_lines, dev_accepted, length);
+		cudaDeviceSynchronize();
+		if (tryIdx == 0)
+		{
+			length1 = length;
+			dev_accepted1 = dev_accepted;
+			dev_lines1 = dev_lines;
+		}
+		else
+		{
+			length2 = length;
+			dev_accepted2 = dev_accepted;
+			dev_lines2 = dev_lines;
+		}
+
+		bool* accepted = (bool*)malloc(length * sizeof(bool));
+		cudaMemcpy(accepted, dev_accepted, length * sizeof(bool), cudaMemcpyDeviceToHost);
+		int count = 0;
+		for (int i = 0; i < length; i++)
+		{
+			if (accepted[i] == true) count++;
+		}
+		if (count > maxCount)
+		{
+			maxCount = count;
+		}
+		if (count >= 8)
+		{
+			houghImageLine CUDA_KERNEL(1, length)(dev_image, dev_lines, dev_accepted);
+			cudaDeviceSynchronize();
+
+			tryIdx = 2;
+		}
+	}
+
+	if (maxCount < 8)
+	{
+		houghImageLine CUDA_KERNEL(1, length1)(dev_image, dev_lines1, dev_accepted1);
+		cudaDeviceSynchronize();
+
+		houghImageLine CUDA_KERNEL(1, length2)(dev_image, dev_lines2, dev_accepted2);
+		cudaDeviceSynchronize();
+	}
 
 	return dev_image;
 }

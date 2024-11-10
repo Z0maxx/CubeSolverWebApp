@@ -70,10 +70,10 @@ void identifyColors(int* image)
 	testCenters(dev_centers, length, minY, minX, maxY, maxX);
 	if (*maxX > *minX && *maxY > *minY)
 	{
-		*minX -= 5;
-		*minY -= 5;
-		*maxX += 5;
-		*maxY += 5;
+		*minX -= 10;
+		*minY -= 10;
+		*maxX += 10;
+		*maxY += 10;
 		if (*minX < 0) *minX = 0;
 		if (*minY < 0) *minY = 0;
 		if (*maxX >= width) *maxX = width - 1;

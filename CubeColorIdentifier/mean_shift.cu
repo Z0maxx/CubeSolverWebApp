@@ -131,9 +131,9 @@ int** meanShift(int** dev_image)
 	for (int i = 0; i < 3; i++)
 	{
 		meanShiftPixel CUDA_KERNEL(meanShiftBlocks, threadsPerBlock, threadsPerBlock * sizeof(MeanShiftVars))(dev_image, dev_temp, 20);
-		error = cudaDeviceSynchronize();
-		setTempPixel  CUDA_KERNEL(meanShiftBlocks, threadsPerBlock)(dev_image, dev_temp);
-		error = cudaDeviceSynchronize();
+		cudaDeviceSynchronize();
+		setTempPixel CUDA_KERNEL(meanShiftBlocks, threadsPerBlock)(dev_image, dev_temp);
+		cudaDeviceSynchronize();
 	}
 	
 	int** dev_meanShifted;

@@ -1,7 +1,11 @@
 #include "center_tester.cuh"
 
-__constant__ const int const_testRange = 3;
-__constant__ const int const_minSize = 250;
+__constant__ const int const_testRange = 4;
+
+__device__ __host__ bool checkSize(Center center)
+{
+	return center.size >= 250 && center.width > 5 && center.height > 5;
+}
 
 __global__ void testCenter(Center* dev_centers, int* length, int* dev_minY, int* dev_minX, int* dev_maxY, int* dev_maxX)
 {
@@ -13,15 +17,17 @@ __global__ void testCenter(Center* dev_centers, int* length, int* dev_minY, int*
 	Center acceptedTestedCenter;
 	int acceptedhalfDiff = -1;
 
-	while (i < *length && !center.accepted && center.size > const_minSize)
+	if (!checkSize(center)) return;
+
+	while (i < *length && !center.accepted)
 	{
 		Center otherCenter = dev_centers[i];
 		if (i != idx &&
-			otherCenter.size > const_minSize &&
+			checkSize(otherCenter) &&
 			(
 				center.y - const_testRange < otherCenter.y && center.y + const_testRange > otherCenter.y ||
 				otherCenter.y - const_testRange < center.y && otherCenter.y + const_testRange > center.y
-			))
+				))
 		{
 			int diff = abs(center.x - otherCenter.x);
 			int halfDiff = diff / 2;
@@ -31,13 +37,13 @@ __global__ void testCenter(Center* dev_centers, int* length, int* dev_minY, int*
 			{
 				Center testedCenter = dev_centers[j];
 				if (j != i && j != idx &&
-					testedCenter.size > const_minSize &&
+					checkSize(testedCenter) &&
 					centerPoint - const_testRange < testedCenter.x &&
 					centerPoint + const_testRange > testedCenter.x &&
 					(
 						center.y - const_testRange < testedCenter.y && center.y + const_testRange > testedCenter.y ||
 						otherCenter.y - const_testRange < testedCenter.y && otherCenter.y + const_testRange > testedCenter.y
-					))
+						))
 				{
 					acceptedOtherCenter = otherCenter;
 					acceptedTestedCenter = testedCenter;
@@ -55,13 +61,13 @@ __global__ void testCenter(Center* dev_centers, int* length, int* dev_minY, int*
 	{
 		i = 0;
 		center.accepted = false;
-		while (i < *length && !center.accepted && center.size > const_minSize)
+		while (i < *length && !center.accepted)
 		{
 			Center otherCenter = dev_centers[i];
 			if (i != idx &&
-				otherCenter.size > const_minSize &&
-				center.x - const_testRange < otherCenter.x && center.x + const_testRange > otherCenter.x ||
-				otherCenter.x - const_testRange < center.x && otherCenter.x + const_testRange > center.x)
+				checkSize(otherCenter) &&
+				(center.x - const_testRange < otherCenter.x && center.x + const_testRange > otherCenter.x ||
+					otherCenter.x - const_testRange < center.x && otherCenter.x + const_testRange > center.x))
 			{
 				int diff = abs(center.y - otherCenter.y);
 				int halfDiff = diff / 2;
@@ -75,10 +81,11 @@ __global__ void testCenter(Center* dev_centers, int* length, int* dev_minY, int*
 					{
 						Center testedCenter = dev_centers[j];
 						if (j != i && j != idx &&
-							testedCenter.size > const_minSize &&
+							checkSize(testedCenter) &&
+							centerPoint - const_testRange < testedCenter.y && centerPoint + const_testRange > testedCenter.y &&
 							(center.x - const_testRange < testedCenter.x && center.x + const_testRange > testedCenter.x ||
-								otherCenter.x - const_testRange < testedCenter.x && otherCenter.x + const_testRange > testedCenter.x) &&
-							centerPoint - const_testRange < testedCenter.y && centerPoint + const_testRange > testedCenter.y)
+								otherCenter.x - const_testRange < testedCenter.x && otherCenter.x + const_testRange > testedCenter.x)
+							)
 						{
 							atomicMin(dev_minY, center.y - center.height);
 							atomicMin(dev_minY, otherCenter.y - otherCenter.height);

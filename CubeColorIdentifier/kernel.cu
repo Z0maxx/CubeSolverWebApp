@@ -1,5 +1,4 @@
-﻿
-#include "cube_color_identifier.cuh"
+﻿#include "cube_color_identifier.cuh"
 
 int main(int argc, char** argv)
 {
@@ -21,8 +20,6 @@ int main(int argc, char** argv)
 		image[i] = imageChar[i] < 0 ? imageChar[i] + 256 : imageChar[i];
 	}
 	fclose(fileptr);
-	cudaEvent_t start, stop;
-	float t;
 	identifyColors(image);
 	return 0;
 }

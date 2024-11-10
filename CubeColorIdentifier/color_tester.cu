@@ -51,7 +51,7 @@ void testCenter(Center* centers, unsigned int** cubeColorCounts, std::vector<Cen
 		int max = 0;
 		for (int i = 1; i < 7; i++)
 		{
-			if (counts[i] > 0)
+			if (counts[i] > 2)
 			{
 				differentColors++;
 			}
@@ -60,7 +60,7 @@ void testCenter(Center* centers, unsigned int** cubeColorCounts, std::vector<Cen
 				max = i;
 			}
 		}
-		if (differentColors <= 2)
+		if (differentColors <= 2 && checkSize(center))
 		{
 			center.accepted = true;
 			center.mainColor = (CubeColor)max;
