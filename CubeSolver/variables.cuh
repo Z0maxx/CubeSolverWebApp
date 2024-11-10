@@ -13,8 +13,8 @@
 #include "enums.h"
 #include "structs.h"
 
-__device__ __host__ const int solveCount = 82944;
-__device__ __host__ const int maxStepCount = 263;
+__constant__ const int solveCount = 82944;
+__constant__ const int maxStepCount = 263;
 
 extern __managed__ bool edgeError;
 extern __managed__ bool cornerError;
