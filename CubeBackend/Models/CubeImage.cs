@@ -5,19 +5,14 @@ namespace CubeBackend.Models
     public class CubeImage
     {
         [Required]
-        public byte[] Pixels { get; set; }
+        public byte[]? Pixels { get; set; }
 
         [Required]
         [Range(640, 1920)]
-        public int Width { get; set; }
+        public int? Width { get; set; }
 
         [Required]
         [Range(480, 1080)]
-        public int Height { get; set; }
-
-        public CubeImage()
-        {
-            Pixels = Array.Empty<byte>();
-        }
+        public int? Height { get; set; }
     }
 }

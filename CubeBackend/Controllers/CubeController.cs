@@ -1,10 +1,7 @@
 ﻿using CubeBackend.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Text;
-using System.Text.Json;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CubeBackend.Controllers
 {
@@ -12,24 +9,55 @@ namespace CubeBackend.Controllers
     [ApiController]
     public class CubeController : ControllerBase
     {
-        private static bool IsSolveRequestInvalid(SolveRequest solveRequest)
+        private static void ValidateSolveRequest(SolveRequest solveRequest)
         {
-            return solveRequest.Colors.Length != 3 ||
+            var context = new ValidationContext(solveRequest);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(solveRequest, context, validationResults, true);
+            if (!isValid)
+            {
+                throw new ArgumentException(string.Join(" ", validationResults.Select(r => r.ErrorMessage)));
+            }
+
+            if (solveRequest.Colors?.Length != 3 ||
                 Array.Exists(solveRequest.Colors, layer => layer.Length != 9 ||
-                Array.Exists(layer, cube => cube.Length != 6 ||
-                Array.Exists(cube, color => color < 0 || color > 6)));
+                Array.Exists(layer, cube => cube.Length != 6)))
+            {
+                throw new ArgumentException("The dimensions of the Colors array is invalid.");
+            }
+
+            if (Array.Exists(solveRequest.Colors, layer =>
+                Array.Exists(layer, cube =>
+                Array.Exists(cube, color => color < 0 || color > 6))))
+            {
+                throw new ArgumentException("The Colors array contains invalid color.");
+            }
         }
 
-        private static bool IsCubeImageInvalid(CubeImage cubeImage)
+        private static void ValidateCubeImage(CubeImage cubeImage)
         {
-            return cubeImage.Pixels.Length == 0 || cubeImage.Width * cubeImage.Height * 3 != cubeImage.Pixels.Length;
+            var context = new ValidationContext(cubeImage);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(cubeImage, context, validationResults, true);
+            if (!isValid)
+            {
+                throw new ArgumentException(string.Join(" ", validationResults.Select(r => r.ErrorMessage)));
+            }
+
+            if (cubeImage.Pixels != null && cubeImage.Pixels.Length == 0) throw new ArgumentException("The Pixels array is empty.");
+            if (cubeImage.Pixels != null && cubeImage.Width * cubeImage.Height * 3 != cubeImage.Pixels.Length) throw new ArgumentException("The length of the Pixels array doesn't match up with Width and Height.");
         }
+
         [HttpPost]
         public IActionResult Solve(SolveRequest solveRequest)
         {
-            if (IsSolveRequestInvalid(solveRequest))
+            try
             {
-                return BadRequest("Invalid solve request");
+                ValidateSolveRequest(solveRequest);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Invalid SolveRequest: " + e.Message);
             }
 
             int[] a = solveRequest.Colors.SelectMany(x => x).SelectMany(x => x).ToArray();
@@ -40,7 +68,7 @@ namespace CubeBackend.Controllers
                 {
                     FileName = "CubeSolver.exe",
                     CreateNoWindow = true,
-                    Arguments = $"{b} {(solveRequest.WhiteCross ? 1 : 0)}",
+                    Arguments = $"{b} {((bool)solveRequest.WhiteCross ? 1 : 0)}",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
@@ -77,9 +105,13 @@ namespace CubeBackend.Controllers
         [HttpPost]
         public IActionResult IdentifyColors(CubeImage cubeImage)
         {
-            if (IsCubeImageInvalid(cubeImage))
+            try
             {
-                return BadRequest("Invalid CubeImage");
+                ValidateCubeImage(cubeImage);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Invalid CubeImage: " + e.Message);
             }
 
             string file = $"{Guid.NewGuid()}.dat";
