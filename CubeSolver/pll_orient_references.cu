@@ -1,13 +1,13 @@
 #include "pll_orient_references.cuh"
 
-__constant__ Reference const_PLLOrientReference =
+__constant__ const Reference const_PLLOrientReference =
 {
 	Layer_Middle,
 	Cube_Top,
 	Side_Top
 };
 
-__constant__ Reference const_PLLOrientTargetReferences[4] =
+__constant__ const Reference const_PLLOrientTargetReferences[4] =
 {
 	{
 		Layer_Front,
@@ -31,14 +31,14 @@ __constant__ Reference const_PLLOrientTargetReferences[4] =
 	}
 };
 
-__constant__ Reference const_PLLOrientCurrentTargetReference =
+__constant__ const Reference const_PLLOrientCurrentTargetReference =
 {
 	Layer_Front,
 	Cube_Top_Left,
 	Side_Top
 };
 
-__constant__ Reference const_PLLOrientEdgeMatchReferences[2] =
+__constant__ const Reference const_PLLOrientEdgeMatchReferences[2] =
 {
 	{
 		Layer_Front,
@@ -52,7 +52,7 @@ __constant__ Reference const_PLLOrientEdgeMatchReferences[2] =
 	}
 };
 
-__constant__ Reference const_PLLOrientCornerMatchReferences[4] =
+__constant__ const Reference const_PLLOrientCornerMatchReferences[4] =
 {
 	{
 		Layer_Front,
@@ -76,7 +76,7 @@ __constant__ Reference const_PLLOrientCornerMatchReferences[4] =
 	}
 };
 
-__constant__ Reference const_PLLOrientFinalReferences[2] =
+__constant__ const Reference const_PLLOrientFinalReferences[2] =
 {
 	{
 		Layer_Front,

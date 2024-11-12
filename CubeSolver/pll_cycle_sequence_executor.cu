@@ -5,7 +5,7 @@ __device__ void executePLLCycleSequence(const int cubeIdx, const uint2 crossIdx,
 	for (int i = 0; i < 8; i++)
 	{
 		dev_PLLCycleLayerMoves[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][idx][i] = sequence[i];
-		const TranslatedNotation move = translateNotation(sequence[i]);
+		TranslatedNotation move = translateNotation(sequence[i]);
 		turnF2LEdgeLayer(cubeIdx, crossIdx, cornerIdx, edgeIdx, move.cubeLayer, move.direction, move.twice);
 	}
 }

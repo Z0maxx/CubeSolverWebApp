@@ -1,6 +1,6 @@
 #include "corner_sequence_finder.cuh"
 
-__device__ const Notation* findCornerSequence(CornerSolveSequence sequences[24], const uint2 edge, const Color colors[6], const Color targetColor)
+__device__ const Notation* findCornerSequence(const CornerSolveSequence sequences[24], const uint2 edge, const Color colors[6], const Color targetColor)
 {
 	for (int i = 0; i < 24; i++)
 	{

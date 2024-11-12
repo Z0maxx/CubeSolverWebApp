@@ -16,18 +16,18 @@ __device__ void solveCrossPiece(const int cubeIdx, const uint2 crossIdx, const i
 	{
 		colors[i] = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][const_crossReferences[i].layer][const_crossReferences[i].cube][const_crossReferences[i].side];
 	}
-	const uint2 edge = findEdge(dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y], colors, 12);
-	const Color targetColor = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][const_crossTargetReference.layer][const_crossTargetReference.cube][const_crossTargetReference.side];
+	uint2 edge = findEdge(dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y], colors, 12);
+	Color targetColor = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][const_crossTargetReference.layer][const_crossTargetReference.cube][const_crossTargetReference.side];
 	const Notation* sequence = findCrossSequence(edge, dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][edge.x][edge.y], targetColor);
 	executeCrossSequence(cubeIdx, crossIdx, sequence, idx);
 }
 
 __global__ void solveCrossThread()
 {
-	const int cubeIdx = blockIdx.x;
-	const int crossIdxX = threadIdx.x;
-	const int crossIdxY = threadIdx.y;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int cubeIdx = blockIdx.x;
+	int crossIdxX = threadIdx.x;
+	int crossIdxY = threadIdx.y;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
 	for (int i = 0; i < 4; i++)
 	{

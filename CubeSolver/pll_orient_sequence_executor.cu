@@ -5,7 +5,7 @@ __device__ void executePLLOrientSequence(const int cubeIdx, const uint2 crossIdx
 	for (int i = 0; i < 4; i++)
 	{
 		dev_PLLOrientLayerMoves[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][idx][roundIdx][i] = const_PLLOrientSequence[i];
-		const TranslatedNotation move = translateNotation(const_PLLOrientSequence[i]);
+		TranslatedNotation move = translateNotation(const_PLLOrientSequence[i]);
 		turnF2LEdgeLayer(cubeIdx, crossIdx, cornerIdx, edgeIdx, move.cubeLayer, move.direction, move.twice);
 	}
 }

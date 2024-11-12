@@ -1,6 +1,6 @@
 #include "oll_cross_sequences.cuh"
 
-__constant__ MatchSequence const_OLLCrossSequences[7]
+__constant__ const MatchSequence const_OLLCrossSequences[7]
 {
 	{
 		{ false, false, false, false },

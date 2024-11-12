@@ -4,4 +4,4 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __constant__ MatchSequence const_OLLCrossSequences[7];
+extern __constant__ const MatchSequence const_OLLCrossSequences[7];

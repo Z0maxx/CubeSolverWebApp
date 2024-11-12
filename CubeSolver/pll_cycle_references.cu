@@ -1,6 +1,6 @@
 #include "pll_cycle_references.cuh"
 
-__constant__ Reference const_PLLCycleReferences[4][3] =
+__constant__ const Reference const_PLLCycleReferences[4][3] =
 {
 	{
 		{
@@ -72,7 +72,7 @@ __constant__ Reference const_PLLCycleReferences[4][3] =
 	}
 };
 
-__constant__ CubeReference const_PLLCycleCubeReferences[4] =
+__constant__ const CubeReference const_PLLCycleCubeReferences[4] =
 {
 	{
 		Layer_Front,

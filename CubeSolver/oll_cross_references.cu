@@ -1,6 +1,6 @@
 #include "oll_cross_references.cuh"
 
-__constant__ Reference const_OLLCrossReferences[4]
+__constant__ const Reference const_OLLCrossReferences[4]
 {
 	{
 		Layer_Front,
@@ -24,7 +24,7 @@ __constant__ Reference const_OLLCrossReferences[4]
 	}
 };
 
-__constant__ Reference const_OLLCrossTargetReference =
+__constant__ const Reference const_OLLCrossTargetReference =
 {
 	Layer_Middle,
 	Cube_Top,

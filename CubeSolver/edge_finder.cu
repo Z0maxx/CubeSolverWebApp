@@ -68,8 +68,8 @@ __device__ const uint2 findEdge(const Color cubeColors[3][9][6], const Color col
 {
 	for (int i = 0; i < count; i++)
 	{
-		const Layer layer = const_edges[i].layer;
-		const Cube cube = const_edges[i].cube;
+		Layer layer = const_edges[i].layer;
+		Cube cube = const_edges[i].cube;
 		Color targetColors[2]{};
 		for (int j = 0; j < 2; j++)
 		{

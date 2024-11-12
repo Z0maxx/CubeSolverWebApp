@@ -1,6 +1,6 @@
 #include "cross_references.cuh"
 
-__constant__ Reference const_crossReferences[2] =
+__constant__ const Reference const_crossReferences[2] =
 {
 	{
 		Layer_Front,
@@ -14,7 +14,7 @@ __constant__ Reference const_crossReferences[2] =
 	}
 };
 
-__constant__ Reference const_crossTargetReference =
+__constant__ const Reference const_crossTargetReference =
 {
 	Layer_Front,
 	Cube_Center,

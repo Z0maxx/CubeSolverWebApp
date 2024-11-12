@@ -1,6 +1,6 @@
 #include "cross_sequences.cuh"
 
-__constant__ EdgeSolveSequence const_crossSequences[24] =
+__constant__ const EdgeSolveSequence const_crossSequences[24] =
 {
 	{
 		Layer_Front,

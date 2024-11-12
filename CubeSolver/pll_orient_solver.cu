@@ -111,19 +111,19 @@ __device__ void PLLOrientSolve(const int cubeIdx, const uint2 crossIdx, const ui
 
 __global__ void solvePLLOrientThread()
 {
-	const int cubeIdx = blockIdx.x;
+	int cubeIdx = blockIdx.x;
 
-	const int crossIdxX = blockIdx.y;
-	const int crossIdxY = blockIdx.z;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int crossIdxX = blockIdx.y;
+	int crossIdxY = blockIdx.z;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
-	const int cornerIdxX = threadIdx.x % 4;
-	const int cornerIdxY = threadIdx.x / 4;
-	const uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
+	int cornerIdxX = threadIdx.x % 4;
+	int cornerIdxY = threadIdx.x / 4;
+	uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
 
-	const int edgeIdxX = threadIdx.y;
-	const int edgeIdxY = threadIdx.z;
-	const uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
+	int edgeIdxX = threadIdx.y;
+	int edgeIdxY = threadIdx.z;
+	uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
 
 	PLLOrientSolve(cubeIdx, crossIdx, cornerIdx, edgeIdx);
 }

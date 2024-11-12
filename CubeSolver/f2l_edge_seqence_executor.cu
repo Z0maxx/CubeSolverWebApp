@@ -6,7 +6,7 @@ __device__ void executeF2LEdgeSequence(const int cubeIdx, const uint2 crossIdx, 
 	while (i < 16 && sequence[i] != None)
 	{
 		dev_F2LEdgeLayerMoves[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][idx][i] = sequence[i];
-		const TranslatedNotation move = translateNotation(sequence[i]);
+		TranslatedNotation move = translateNotation(sequence[i]);
 		turnF2LEdgeLayer(cubeIdx, crossIdx, cornerIdx, edgeIdx, move.cubeLayer, move.direction, move.twice);
 		i++;
 	}

@@ -7,12 +7,12 @@ __device__ void rotateCrossLayerColors(const int cubeIdx, const uint2 crossIdx, 
 {
     memcpy(shr_tempCrossColors[crossIdx.x][crossIdx.y], dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y], sizeof(shr_tempCrossColors[crossIdx.x][crossIdx.y]));
 
-    const int alwaysMoveIdx = cubeLayer / 3;
-    const int directionIdx = direction % 2;
+    int alwaysMoveIdx = cubeLayer / 3;
+    int directionIdx = direction % 2;
 
     for (int x = 0; x < 4; x++)
     {
-        const Move cornerMove = const_layerCornerMoves[cubeLayer][directionIdx][x];
+        Move cornerMove = const_layerCornerMoves[cubeLayer][directionIdx][x];
 
         for (int y = 0; y < 2; y++)
         {
@@ -23,7 +23,7 @@ __device__ void rotateCrossLayerColors(const int cubeIdx, const uint2 crossIdx, 
 
     for (int x = 0; x < 4; x++)
     {
-        const Move edgeMove = const_layerEdgeMoves[cubeLayer][directionIdx][x];
+        Move edgeMove = const_layerEdgeMoves[cubeLayer][directionIdx][x];
         shr_tempCrossColors[crossIdx.x][crossIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
         for (int y = 0; y < 2; y++)
         {
@@ -38,11 +38,11 @@ __device__ void rotateCrossFaceColors(const int cubeIdx, const uint2 crossIdx, c
 {
     if (moveIdx == MoveIdx_None) return;
 
-    const int alwaysMoveIdx = moveIdx / 2;
+    int alwaysMoveIdx = moveIdx / 2;
 
     for (int x = 0; x < 8; x++)
     {
-        const Move cornerMove = const_faceCornerMoves[moveIdx][x];
+        Move cornerMove = const_faceCornerMoves[moveIdx][x];
         for (int y = 0; y < 2; y++)
         {
             shr_tempCrossColors[crossIdx.x][crossIdx.y][cornerMove.targetLayer][cornerMove.targetCube][cornerMove.targetSides[y]] = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][cornerMove.originLayer][cornerMove.originCube][cornerMove.originSides[y]];
@@ -52,7 +52,7 @@ __device__ void rotateCrossFaceColors(const int cubeIdx, const uint2 crossIdx, c
 
     for (int x = 0; x < 12; x++)
     {
-        const Move edgeMove = const_faceEdgeMoves[moveIdx][x];
+        Move edgeMove = const_faceEdgeMoves[moveIdx][x];
         if (x < 8)
         {
             shr_tempCrossColors[crossIdx.x][crossIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
@@ -73,7 +73,7 @@ __device__ void rotateCrossFaceColors(const int cubeIdx, const uint2 crossIdx, c
 
     for (int x = 0; x < 6; x++)
     {
-        const Move centerMove = const_faceCenterMoves[moveIdx][x];
+        Move centerMove = const_faceCenterMoves[moveIdx][x];
         shr_tempCrossColors[crossIdx.x][crossIdx.y][centerMove.targetLayer][centerMove.targetCube][centerMove.targetSides[0]] = dev_crossColors[cubeIdx][crossIdx.x][crossIdx.y][centerMove.originLayer][centerMove.originCube][centerMove.originSides[0]];
     }
 

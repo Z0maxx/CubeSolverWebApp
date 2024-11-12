@@ -4,4 +4,4 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __constant__ CornerSolveSequence const_F2LCornerSequences[24];
+extern __constant__ const CornerSolveSequence const_F2LCornerSequences[24];

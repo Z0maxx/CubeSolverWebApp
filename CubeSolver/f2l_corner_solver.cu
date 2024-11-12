@@ -16,23 +16,23 @@ __device__ void solveF2LCornerPiece(const int cubeIdx, const uint2 crossIdx, con
 	{
 		colors[i] = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][const_F2LCornerReferences[i].layer][const_F2LCornerReferences[i].cube][const_F2LCornerReferences[i].side];
 	}
-	const uint2 corner = findCorner(dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], colors, 8);
-	const Color targetColor = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][const_F2LCornerTargetReference.layer][const_F2LCornerTargetReference.cube][const_F2LCornerTargetReference.side];
+	uint2 corner = findCorner(dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y], colors, 8);
+	Color targetColor = dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][const_F2LCornerTargetReference.layer][const_F2LCornerTargetReference.cube][const_F2LCornerTargetReference.side];
 	const Notation* sequence = findCornerSequence(const_F2LCornerSequences, corner, dev_F2LCornerColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][corner.x][corner.y], targetColor);
 	executeF2LCornerSequence(cubeIdx, crossIdx, cornerIdx, sequence, idx);
 }
 
 __global__ void solveF2LCornerThread()
 {
-	const int cubeIdx = blockIdx.x;
+	int cubeIdx = blockIdx.x;
 
-	const int crossIdxX = blockIdx.y;
-	const int crossIdxY = blockIdx.z;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int crossIdxX = blockIdx.y;
+	int crossIdxY = blockIdx.z;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
-	const int cornerIdxX = threadIdx.x;
-	const int cornerIdxY = threadIdx.y;
-	const uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
+	int cornerIdxX = threadIdx.x;
+	int cornerIdxY = threadIdx.y;
+	uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
 
 	for (int i = 0; i < 4; i++)
 	{

@@ -6,7 +6,7 @@ __device__ void executeOLLEdgeSequence(const int cubeIdx, const uint2 crossIdx, 
 	while (i < 15 && sequence[i] != None)
 	{
 		dev_OLLEdgeLayerMoves[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][i + 1] = sequence[i];
-		const TranslatedNotation move = translateNotation(sequence[i]);
+		TranslatedNotation move = translateNotation(sequence[i]);
 		turnF2LEdgeLayer(cubeIdx, crossIdx, cornerIdx, edgeIdx, move.cubeLayer, move.direction, move.twice);
 		i++;
 	}

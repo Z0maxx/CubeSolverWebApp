@@ -4,4 +4,4 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __constant__ EdgeSolveSequence const_crossSequences[24];
+extern __constant__ const EdgeSolveSequence const_crossSequences[24];

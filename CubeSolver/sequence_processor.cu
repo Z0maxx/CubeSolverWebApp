@@ -15,19 +15,19 @@ __device__ int dev_tempMovesCountIdx[solveCount];
 
 __global__ void setMovesThread()
 {
-	const int cubeIdx = blockIdx.x;
+	int cubeIdx = blockIdx.x;
 
-	const int crossIdxX = blockIdx.y;
-	const int crossIdxY = blockIdx.z;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int crossIdxX = blockIdx.y;
+	int crossIdxY = blockIdx.z;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
-	const int cornerIdxX = threadIdx.x % 4;
-	const int cornerIdxY = threadIdx.x / 4;
-	const uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
+	int cornerIdxX = threadIdx.x % 4;
+	int cornerIdxY = threadIdx.x / 4;
+	uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
 
-	const int edgeIdxX = threadIdx.y;
-	const int edgeIdxY = threadIdx.z;
-	const uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
+	int edgeIdxX = threadIdx.y;
+	int edgeIdxY = threadIdx.z;
+	uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
 
 	int idx = cubeIdx * 13824 + crossIdx.x * 3456 + crossIdx.y * 576 + cornerIdx.x * 144 + cornerIdx.y * 24 + edgeIdx.x * 6 + edgeIdx.y;
 	dev_movesCountIdx[idx] = idx;
@@ -110,23 +110,23 @@ void setMoves()
 	cudaDeviceSynchronize();
 }
 
-__global__ void setMovesCountThread(bool whiteOnly)
+__global__ void setMovesCountThread(const bool whiteOnly)
 {
-	const int cubeIdx = blockIdx.x;
+	int cubeIdx = blockIdx.x;
 
-	const int crossIdxX = blockIdx.y;
-	const int crossIdxY = blockIdx.z;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int crossIdxX = blockIdx.y;
+	int crossIdxY = blockIdx.z;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
-	const int cornerIdxX = threadIdx.x % 4;
-	const int cornerIdxY = threadIdx.x / 4;
-	const uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
+	int cornerIdxX = threadIdx.x % 4;
+	int cornerIdxY = threadIdx.x / 4;
+	uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
 
-	const int edgeIdxX = threadIdx.y;
-	const int edgeIdxY = threadIdx.z;
-	const uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
+	int edgeIdxX = threadIdx.y;
+	int edgeIdxY = threadIdx.z;
+	uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
 
-	const int idx = cubeIdx * 13824 + crossIdx.x * 3456 + crossIdx.y * 576 + cornerIdx.x * 144 + cornerIdx.y * 24 + edgeIdx.x * 6 + edgeIdx.y;
+	int idx = cubeIdx * 13824 + crossIdx.x * 3456 + crossIdx.y * 576 + cornerIdx.x * 144 + cornerIdx.y * 24 + edgeIdx.x * 6 + edgeIdx.y;
 
 	int count = 0;
 	if (whiteOnly && dev_F2LEdgeColors[cubeIdx][0][0][0][0][0][0][Layer_Middle][Cube_Bottom][Side_Bottom] != White)
@@ -214,13 +214,13 @@ __global__ void setMovesCountThread(bool whiteOnly)
 	dev_movesCount[idx] = count;
 }
 
-void setMovesCount(bool whiteOnly)
+void setMovesCount(const bool whiteOnly)
 {
 	setMovesCountThread CUDA_KERNEL(dim3(6, 4, 6), dim3(24, 4, 6))(whiteOnly);
 	cudaDeviceSynchronize();
 }
 
-__device__ void setSequenceInner(int needed, int idx, int idx1, int idx2, int* dev_fromMovesCount, int* dev_toMovesCount, int* dev_fromMovesCountIdx, int* dev_toMovesCountIdx)
+__device__ void setSequenceInner(const int needed, const int idx, const int idx1, const int idx2, const int* dev_fromMovesCount, int* dev_toMovesCount, const int* dev_fromMovesCountIdx, int* dev_toMovesCountIdx)
 {
 	int a = dev_fromMovesCount[idx1];
 	int b = dev_fromMovesCount[idx2];
@@ -272,7 +272,7 @@ void setSequence()
 	}
 }
 
-void findSequence(bool whiteOnly)
+void findSequence(const bool whiteOnly)
 {
 	setMoves();
 	setMovesCount(whiteOnly);

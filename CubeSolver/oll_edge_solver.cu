@@ -4,8 +4,8 @@ __device__ bool setOLLEdgeMatch(const int cubeIdx, const uint2 crossIdx, const u
 {
 	for (int i = 0; i < 4; i++)
 	{
-		const Color color = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeReferences[i].layer][const_OLLEdgeReferences[i].cube][const_OLLEdgeReferences[i].side];
-		const Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeTargetReferences[i].layer][const_OLLEdgeTargetReferences[i].cube][const_OLLEdgeTargetReferences[i].side];
+		Color color = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeReferences[i].layer][const_OLLEdgeReferences[i].cube][const_OLLEdgeReferences[i].side];
+		Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeTargetReferences[i].layer][const_OLLEdgeTargetReferences[i].cube][const_OLLEdgeTargetReferences[i].side];
 		match[i] = color == targetColor;
 	}
 	int j = 0;
@@ -20,9 +20,9 @@ __device__ void setOLLEdgeNear(const int cubeIdx, const uint2 crossIdx, const ui
 {
 	for (int i = 0; i < 4; i++)
 	{
-		const Color origin = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].origin.layer][const_OLLEdgeNearReferences[i].origin.cube][const_OLLEdgeNearReferences[i].origin.side];
-		const Color leftTarget = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].leftTarget.layer][const_OLLEdgeNearReferences[i].leftTarget.cube][const_OLLEdgeNearReferences[i].leftTarget.side];
-		const Color rightTarget = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].rightTarget.layer][const_OLLEdgeNearReferences[i].rightTarget.cube][const_OLLEdgeNearReferences[i].rightTarget.side];
+		Color origin = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].origin.layer][const_OLLEdgeNearReferences[i].origin.cube][const_OLLEdgeNearReferences[i].origin.side];
+		Color leftTarget = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].leftTarget.layer][const_OLLEdgeNearReferences[i].leftTarget.cube][const_OLLEdgeNearReferences[i].leftTarget.side];
+		Color rightTarget = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLEdgeNearReferences[i].rightTarget.layer][const_OLLEdgeNearReferences[i].rightTarget.cube][const_OLLEdgeNearReferences[i].rightTarget.side];
 		near[i] = origin == leftTarget || origin == rightTarget;
 	}
 }
@@ -59,19 +59,19 @@ __device__ void OLLEdgeSolve(const int cubeIdx, const uint2 crossIdx, const uint
 
 __global__ void solveOLLEdgeThread()
 {
-	const int cubeIdx = blockIdx.x;
+	int cubeIdx = blockIdx.x;
 
-	const int crossIdxX = blockIdx.y;
-	const int crossIdxY = blockIdx.z;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int crossIdxX = blockIdx.y;
+	int crossIdxY = blockIdx.z;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
-	const int cornerIdxX = threadIdx.x % 4;
-	const int cornerIdxY = threadIdx.x / 4;
-	const uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
+	int cornerIdxX = threadIdx.x % 4;
+	int cornerIdxY = threadIdx.x / 4;
+	uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
 
-	const int edgeIdxX = threadIdx.y;
-	const int edgeIdxY = threadIdx.z;
-	const uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
+	int edgeIdxX = threadIdx.y;
+	int edgeIdxY = threadIdx.z;
+	uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
 
 	OLLEdgeSolve(cubeIdx, crossIdx, cornerIdx, edgeIdx);
 }

@@ -4,5 +4,5 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __constant__ Reference const_OLLCrossReferences[4];
-extern __constant__ Reference const_OLLCrossTargetReference;
+extern __constant__ const Reference const_OLLCrossReferences[4];
+extern __constant__ const Reference const_OLLCrossTargetReference;

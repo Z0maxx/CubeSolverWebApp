@@ -1,6 +1,6 @@
 #include "oll_edge_sequences.cuh"
 
-__constant__ MatchNearSequence const_OLLEdgeSequences[15] =
+__constant__ const MatchNearSequence const_OLLEdgeSequences[15] =
 {
 	{
 		{ true, false, false, false },

@@ -4,4 +4,4 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __constant__ Notation const_PLLOrientSequence[4];
+extern __constant__ const Notation const_PLLOrientSequence[4];

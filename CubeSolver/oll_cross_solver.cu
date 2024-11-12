@@ -15,7 +15,7 @@ __device__ bool setOLLCrossMatch(const int cubeIdx, const uint2 crossIdx, const 
 }
 __device__ void OLLCrossSolve(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx)
 {
-	const Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLCrossTargetReference.layer][const_OLLCrossTargetReference.cube][const_OLLCrossTargetReference.side];
+	Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_OLLCrossTargetReference.layer][const_OLLCrossTargetReference.cube][const_OLLCrossTargetReference.side];
 	bool match[4];
 	int idx = 0;
 	bool foundSequence = true;
@@ -38,19 +38,19 @@ __device__ void OLLCrossSolve(const int cubeIdx, const uint2 crossIdx, const uin
 
 __global__ void solveOLLCrossThread()
 {
-	const int cubeIdx = blockIdx.x;
+	int cubeIdx = blockIdx.x;
 
-	const int crossIdxX = blockIdx.y;
-	const int crossIdxY = blockIdx.z;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int crossIdxX = blockIdx.y;
+	int crossIdxY = blockIdx.z;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
-	const int cornerIdxX = threadIdx.x % 4;
-	const int cornerIdxY = threadIdx.x / 4;
-	const uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
+	int cornerIdxX = threadIdx.x % 4;
+	int cornerIdxY = threadIdx.x / 4;
+	uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
 
-	const int edgeIdxX = threadIdx.y;
-	const int edgeIdxY = threadIdx.z;
-	const uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
+	int edgeIdxX = threadIdx.y;
+	int edgeIdxY = threadIdx.z;
+	uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
 
 	OLLCrossSolve(cubeIdx, crossIdx, cornerIdx, edgeIdx);
 }

@@ -1,6 +1,6 @@
 #include "oll_edge_references.cuh"
 
-__constant__ Reference const_OLLEdgeTargetReferences[4] =
+__constant__ const Reference const_OLLEdgeTargetReferences[4] =
 {
 	{
 		Layer_Front,
@@ -24,7 +24,7 @@ __constant__ Reference const_OLLEdgeTargetReferences[4] =
 	}
 };
 
-__constant__ Reference const_OLLEdgeReferences[4] =
+__constant__ const Reference const_OLLEdgeReferences[4] =
 {
 	{
 		Layer_Front,
@@ -48,7 +48,7 @@ __constant__ Reference const_OLLEdgeReferences[4] =
 	}
 };
 
-__constant__ NearReference const_OLLEdgeNearReferences[4] =
+__constant__ const NearReference const_OLLEdgeNearReferences[4] =
 {
 	{
 		{

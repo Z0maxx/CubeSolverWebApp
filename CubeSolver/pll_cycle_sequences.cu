@@ -1,6 +1,6 @@
 #include "pll_cycle_sequences.cuh"
 
-__constant__ MatchSequence const_PLLCycleSequences[5] =
+__constant__ const MatchSequence const_PLLCycleSequences[5] =
 {
 	{
 		{ false, false, false, false },

@@ -4,5 +4,5 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __constant__ Reference const_crossReferences[2];
-extern __constant__ Reference const_crossTargetReference;
+extern __constant__ const Reference const_crossReferences[2];
+extern __constant__ const Reference const_crossTargetReference;

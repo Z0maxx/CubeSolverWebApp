@@ -17,27 +17,27 @@ __device__ void solveF2LEdgePiece(const int cubeIdx, const uint2 crossIdx, const
 	{
 		colors[i] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_F2LEdgeReferences[i].layer][const_F2LEdgeReferences[i].cube][const_F2LEdgeReferences[i].side];
 	}
-	const uint2 edge = findEdge(dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y], colors, 8);
-	const Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_F2LEdgeTargetReference.layer][const_F2LEdgeTargetReference.cube][const_F2LEdgeTargetReference.side];
+	uint2 edge = findEdge(dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y], colors, 8);
+	Color targetColor = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][const_F2LEdgeTargetReference.layer][const_F2LEdgeTargetReference.cube][const_F2LEdgeTargetReference.side];
 	const Notation* sequence = findF2LEdgeSequence(edge, dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][edge.x][edge.y], targetColor);
 	executeF2LEdgeSequence(cubeIdx, crossIdx, cornerIdx, edgeIdx, sequence, idx);
 }
 
 __global__ void solveF2LEdgeThread()
 {
-	const int cubeIdx = blockIdx.x;
+	int cubeIdx = blockIdx.x;
 
-	const int crossIdxX = blockIdx.y;
-	const int crossIdxY = blockIdx.z;
-	const uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
+	int crossIdxX = blockIdx.y;
+	int crossIdxY = blockIdx.z;
+	uint2 crossIdx = make_uint2(crossIdxX, crossIdxY);
 
-	const int cornerIdxX = threadIdx.x % 4;
-	const int cornerIdxY = threadIdx.x / 4;
-	const uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
+	int cornerIdxX = threadIdx.x % 4;
+	int cornerIdxY = threadIdx.x / 4;
+	uint2 cornerIdx = make_uint2(cornerIdxX, cornerIdxY);
 
-	const int edgeIdxX = threadIdx.y;
-	const int edgeIdxY = threadIdx.z;
-	const uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
+	int edgeIdxX = threadIdx.y;
+	int edgeIdxY = threadIdx.z;
+	uint2 edgeIdx = make_uint2(edgeIdxX, edgeIdxY);
 
 	for (int i = 0; i < 4; i++)
 	{

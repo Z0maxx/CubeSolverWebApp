@@ -1,6 +1,6 @@
-#include "f2l_corner_references.cuh"
+#include "f2l_edge_references.cuh"
 
-__constant__ Reference const_F2LEdgeReferences[2] =
+__constant__ const Reference const_F2LEdgeReferences[2] =
 {
 	{
 		Layer_Middle,
@@ -14,7 +14,7 @@ __constant__ Reference const_F2LEdgeReferences[2] =
 	}
 };
 
-__constant__ Reference const_F2LEdgeTargetReference =
+__constant__ const Reference const_F2LEdgeTargetReference =
 {
 	Layer_Front,
 	Cube_Center,

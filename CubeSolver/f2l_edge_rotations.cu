@@ -5,12 +5,12 @@ __device__ Color dev_tempF2LEdgeColors[6][4][6][4][6][4][6][3][9][6];
 
 __device__ void rotateF2LEdgeLayerColors(const int cubeIdx, const uint2 crossIdx, const uint2 cornerIdx, const uint2 edgeIdx, const CubeLayer cubeLayer, const Direction direction)
 {
-    const int alwaysMoveIdx = cubeLayer / 3;
-    const int directionIdx = direction % 2;
+    int alwaysMoveIdx = cubeLayer / 3;
+    int directionIdx = direction % 2;
 
     for (int x = 0; x < 4; x++)
     {
-        const Move cornerMove = const_layerCornerMoves[cubeLayer][directionIdx][x];
+        Move cornerMove = const_layerCornerMoves[cubeLayer][directionIdx][x];
 
         for (int y = 0; y < 2; y++)
         {
@@ -21,7 +21,7 @@ __device__ void rotateF2LEdgeLayerColors(const int cubeIdx, const uint2 crossIdx
 
     for (int x = 0; x < 4; x++)
     {
-        const Move edgeMove = const_layerEdgeMoves[cubeLayer][directionIdx][x];
+        Move edgeMove = const_layerEdgeMoves[cubeLayer][directionIdx][x];
         dev_tempF2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
         for (int y = 0; y < 2; y++)
         {
@@ -36,11 +36,11 @@ __device__ void rotateF2LEdgeFaceColors(const int cubeIdx, const uint2 crossIdx,
 {
     if (moveIdx == MoveIdx_None) return;
 
-    const int alwaysMoveIdx = moveIdx / 2;
+    int alwaysMoveIdx = moveIdx / 2;
 
     for (int x = 0; x < 8; x++)
     {
-        const Move cornerMove = const_faceCornerMoves[moveIdx][x];
+        Move cornerMove = const_faceCornerMoves[moveIdx][x];
         for (int y = 0; y < 2; y++)
         {
             dev_tempF2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][cornerMove.targetLayer][cornerMove.targetCube][cornerMove.targetSides[y]] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][cornerMove.originLayer][cornerMove.originCube][cornerMove.originSides[y]];
@@ -50,7 +50,7 @@ __device__ void rotateF2LEdgeFaceColors(const int cubeIdx, const uint2 crossIdx,
 
     for (int x = 0; x < 12; x++)
     {
-        const Move edgeMove = const_faceEdgeMoves[moveIdx][x];
+        Move edgeMove = const_faceEdgeMoves[moveIdx][x];
         if (x < 8)
         {
             dev_tempF2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][edgeMove.targetLayer][edgeMove.targetCube][edgeMove.targetSides[0]] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][edgeMove.originLayer][edgeMove.originCube][edgeMove.originSides[0]];
@@ -71,7 +71,7 @@ __device__ void rotateF2LEdgeFaceColors(const int cubeIdx, const uint2 crossIdx,
 
     for (int x = 0; x < 6; x++)
     {
-        const Move centerMove = const_faceCenterMoves[moveIdx][x];
+        Move centerMove = const_faceCenterMoves[moveIdx][x];
         dev_tempF2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][centerMove.targetLayer][centerMove.targetCube][centerMove.targetSides[0]] = dev_F2LEdgeColors[cubeIdx][crossIdx.x][crossIdx.y][cornerIdx.x][cornerIdx.y][edgeIdx.x][edgeIdx.y][centerMove.originLayer][centerMove.originCube][centerMove.originSides[0]];
     }
 

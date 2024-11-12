@@ -1,6 +1,6 @@
 #include "f2l_corner_sequences.cuh"
 
-__constant__ CornerSolveSequence const_F2LCornerSequences[24] =
+__constant__ const CornerSolveSequence const_F2LCornerSequences[24] =
 {
 	{
 		Layer_Front,

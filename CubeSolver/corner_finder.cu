@@ -48,8 +48,8 @@ __device__ const uint2 findCorner(const Color cubeColors[3][9][6], const Color c
 {
 	for (int i = 0; i < count; i++)
 	{
-		const Layer layer = const_corners[i].layer;
-		const Cube cube = const_corners[i].cube;
+		Layer layer = const_corners[i].layer;
+		Cube cube = const_corners[i].cube;
 		Color targetColors[3]{};
 		for (int j = 0; j < 3; j++)
 		{

@@ -4,5 +4,5 @@
 #include "enums.h"
 #include "structs.h"
 
-extern __constant__ Reference const_PLLCycleReferences[4][3];
-extern __constant__ CubeReference const_PLLCycleCubeReferences[4];
+extern __constant__ const Reference const_PLLCycleReferences[4][3];
+extern __constant__ const CubeReference const_PLLCycleCubeReferences[4];

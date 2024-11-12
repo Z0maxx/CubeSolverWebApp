@@ -1,6 +1,6 @@
 #include "f2l_edge_sequences.cuh"
 
-__constant__ EdgeSolveSequence const_F2LEdgeSequences[16] =
+__constant__ const EdgeSolveSequence const_F2LEdgeSequences[16] =
 {
 	{
 		Layer_Front,
