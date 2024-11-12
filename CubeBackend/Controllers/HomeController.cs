@@ -1,18 +1,11 @@
-﻿using CubeColverMVC.Models;
+﻿using CubeBackend.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace CubeColverMVC.Controllers
+namespace CubeBackend.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();

@@ -8,7 +8,7 @@ builder.Services
 var app = builder.Build();
 app.UseCors(options => {
     options
-        .WithOrigins("http://localhost:5173")
+        .WithOrigins(new string[] { "http://localhost:5173", "https://cubesolver.me" })
         .AllowAnyHeader()
         .AllowAnyMethod();
   });

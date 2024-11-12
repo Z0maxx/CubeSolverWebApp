@@ -7,15 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\assets\black_cube-f10d9ed2.dds">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\assets\blue_cube-d54f7c27.dds">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="CubeColorIdentifier.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

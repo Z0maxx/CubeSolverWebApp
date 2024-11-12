@@ -1,4 +1,4 @@
-﻿namespace CubeColverMVC.Models
+﻿namespace CubeBackend.Models
 {
     public class CubeSolve
     {

@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CubeSolver", "CubeSolver\CubeSolver.vcxproj", "{FE47426E-4D6E-4237-8EF8-EAC999F52493}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CubeColverMVC", "CubeColverMVC\CubeColverMVC.csproj", "{CA586101-5EF3-4520-8B51-C01987C8BC36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CubeBackend", "CubeColverMVC\CubeBackend.csproj", "{CA586101-5EF3-4520-8B51-C01987C8BC36}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CubeColorIdentifier", "CubeColorIdentifier\CubeColorIdentifier.vcxproj", "{981D9C27-CE13-4C44-814B-E611F24E6148}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{CA586101-5EF3-4520-8B51-C01987C8BC36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA586101-5EF3-4520-8B51-C01987C8BC36}.Release|x64.ActiveCfg = Release|Any CPU
 		{CA586101-5EF3-4520-8B51-C01987C8BC36}.Release|x64.Build.0 = Release|Any CPU
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Debug|Any CPU.Build.0 = Debug|x64
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Debug|x64.ActiveCfg = Debug|x64
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Debug|x64.Build.0 = Debug|x64
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Release|Any CPU.ActiveCfg = Release|x64
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Release|Any CPU.Build.0 = Release|x64
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Release|x64.ActiveCfg = Release|x64
+		{981D9C27-CE13-4C44-814B-E611F24E6148}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
