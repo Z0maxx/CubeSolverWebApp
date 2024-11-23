@@ -30,8 +30,10 @@ namespace CubeBackend.Controllers
                 Array.Exists(layer, cube =>
                 Array.Exists(cube, color => color < 0 || color > 6))))
             {
-                throw new ArgumentException("The Colors array contains invalid color.");
+                throw new ArgumentException("The Colors array contains invalid value(s).");
             }
+
+            CubeColorValidator.ValidateColors(solveRequest.Colors);
         }
 
         private static void ValidateCubeImage(CubeImage cubeImage)
@@ -57,10 +59,10 @@ namespace CubeBackend.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Invalid SolveRequest: " + e.Message);
+                return BadRequest(e.Message);
             }
 
-            int[] a = solveRequest.Colors.SelectMany(x => x).SelectMany(x => x).ToArray();
+            int[] a = solveRequest.Colors!.SelectMany(x => x).SelectMany(x => x).ToArray();
             string b = string.Join(' ', a);
             var solver = new Process()
             {
@@ -68,7 +70,7 @@ namespace CubeBackend.Controllers
                 {
                     FileName = "CubeSolver.exe",
                     CreateNoWindow = true,
-                    Arguments = $"{b} {((bool)solveRequest.WhiteCross ? 1 : 0)}",
+                    Arguments = $"{b} {((bool)solveRequest.WhiteCross! ? 1 : 0)}",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
@@ -76,12 +78,12 @@ namespace CubeBackend.Controllers
             };
             solver.Start();
             string error = solver.StandardError.ReadToEnd();
-            if (error != "")
-            {
-                return BadRequest("There was an error while solving the qube");
-            }
-
             string[] result = solver.StandardOutput.ReadToEnd().Replace("\"", "").Split(' ');
+            if (error != "" || result.Length == 1)
+            {
+                return BadRequest("There was an error while solving the cube.");
+            }
+            
             error = result[^1];
             if (error == "flipped-edge")
             {
@@ -111,11 +113,11 @@ namespace CubeBackend.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Invalid CubeImage: " + e.Message);
+                return BadRequest(e.Message);
             }
 
             string file = $"{Guid.NewGuid()}.dat";
-            System.IO.File.WriteAllBytes(file, cubeImage.Pixels);
+            System.IO.File.WriteAllBytes(file, cubeImage.Pixels!);
             var identifier = new Process()
             {
                 StartInfo = new ProcessStartInfo()
@@ -134,7 +136,7 @@ namespace CubeBackend.Controllers
             CubeResultImage resultImage = new();
             if (error != "")
             {
-                return BadRequest("There was an error while identifying colors");
+                return BadRequest("There was an error while identifying colors.");
             }
 
             string[] result = identifier.StandardOutput.ReadToEnd().Split('\n');

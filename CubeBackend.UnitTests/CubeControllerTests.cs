@@ -34,7 +34,7 @@ namespace CubeBackend.UnitTests
             var result = controller.IdentifyColors(cubeImage);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid CubeImage: The field Width must be between 640 and 1920."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The field Width must be between 640 and 1920."));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace CubeBackend.UnitTests
             var result = controller.IdentifyColors(cubeImage);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid CubeImage: The Width field is required."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The Width field is required."));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace CubeBackend.UnitTests
             var result = controller.IdentifyColors(cubeImage);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid CubeImage: The field Height must be between 480 and 1080."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The field Height must be between 480 and 1080."));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace CubeBackend.UnitTests
             var result = controller.IdentifyColors(cubeImage);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid CubeImage: The Height field is required."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The Height field is required."));
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace CubeBackend.UnitTests
             var result = controller.IdentifyColors(cubeImage);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid CubeImage: The Pixels field is required."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The Pixels field is required."));
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace CubeBackend.UnitTests
             var result = controller.IdentifyColors(cubeImage);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid CubeImage: The Pixels array is empty."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The Pixels array is empty."));
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace CubeBackend.UnitTests
             var result = controller.IdentifyColors(cubeImage);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid CubeImage: The length of the Pixels array doesn't match up with Width and Height."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The length of the Pixels array doesn't match up with Width and Height."));
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace CubeBackend.UnitTests
             var result = controller.Solve(solveRequest);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid SolveRequest: The Colors field is required."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The Colors field is required."));
         }
 
         [Test]
@@ -161,7 +161,246 @@ namespace CubeBackend.UnitTests
             var result = controller.Solve(solveRequest);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid SolveRequest: The dimensions of the Colors array is invalid."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The dimensions of the Colors array is invalid."));
+        }
+
+        [Test]
+        public void NotAcceptedColors_Solve_ReturnsBadRequest()
+        {
+            var solveRequest = new SolveRequest()
+            {
+                WhiteCross = false,
+                Colors =
+                [
+                    [
+                        [
+                            100,
+                            2,
+                            5,
+                            0,
+                            3,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            3,
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            6,
+                            0,
+                            3,
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            0,
+                            0,
+                            6,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0,
+                            5,
+                            0
+                        ],
+                        [
+                            5,
+                            0,
+                            0,
+                            0,
+                            6,
+                            0
+                        ],
+                        [
+                            0,
+                            6,
+                            0,
+                            4,
+                            5,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            4,
+                            6,
+                            0
+                        ],
+                        [
+                            4,
+                            0,
+                            0,
+                            5,
+                            2,
+                            0
+                        ]
+                    ],
+                    [
+                        [
+                            0,
+                            3,
+                            6,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            3,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            3,
+                            0,
+                            5,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            6,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            0,
+                            4,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            4,
+                            0,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0
+                        ]
+                    ],
+                    [
+                        [
+                            0,
+                            4,
+                            1,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            5
+                        ],
+                        [
+                            3,
+                            0,
+                            1,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            4,
+                            0,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1
+                        ],
+                        [
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            6,
+                            0,
+                            4,
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            5,
+                            0,
+                            4
+                        ],
+                        [
+                            5,
+                            0,
+                            0,
+                            3,
+                            0,
+                            6
+                        ]
+                    ]
+                ]
+            };
+
+            var result = controller.Solve(solveRequest);
+
+            Assert.That(result, Is.InstanceOf(badRequestType));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The Colors array contains invalid color."));
         }
 
         [Test]
@@ -400,7 +639,246 @@ namespace CubeBackend.UnitTests
             var result = controller.Solve(solveRequest);
 
             Assert.That(result, Is.InstanceOf(badRequestType));
-            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Invalid SolveRequest: The WhiteCross field is required."));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("The WhiteCross field is required."));
+        }
+
+        [Test]
+        public void InvalidColors_Solve_ReturnsBadRequest()
+        {
+            var solveRequest = new SolveRequest()
+            {
+                WhiteCross = false,
+                Colors =
+                [
+                    [
+                        [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            3,
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            6,
+                            0,
+                            3,
+                            0,
+                            1,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            0,
+                            0,
+                            6,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0,
+                            5,
+                            0
+                        ],
+                        [
+                            5,
+                            0,
+                            0,
+                            0,
+                            6,
+                            0
+                        ],
+                        [
+                            0,
+                            6,
+                            0,
+                            4,
+                            5,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            4,
+                            6,
+                            0
+                        ],
+                        [
+                            4,
+                            0,
+                            0,
+                            5,
+                            2,
+                            0
+                        ]
+                    ],
+                    [
+                        [
+                            0,
+                            3,
+                            6,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            3,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            3,
+                            0,
+                            5,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            6,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            0,
+                            0,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            1,
+                            0,
+                            4,
+                            0,
+                            0
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            4,
+                            0,
+                            0
+                        ],
+                        [
+                            2,
+                            0,
+                            0,
+                            1,
+                            0,
+                            0
+                        ]
+                    ],
+                    [
+                        [
+                            0,
+                            4,
+                            1,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            2,
+                            0,
+                            0,
+                            5
+                        ],
+                        [
+                            3,
+                            0,
+                            1,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            4,
+                            0,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            0,
+                            0,
+                            1
+                        ],
+                        [
+                            3,
+                            0,
+                            0,
+                            0,
+                            0,
+                            2
+                        ],
+                        [
+                            0,
+                            6,
+                            0,
+                            4,
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            0,
+                            0,
+                            5,
+                            0,
+                            4
+                        ],
+                        [
+                            5,
+                            0,
+                            0,
+                            3,
+                            0,
+                            6
+                        ]
+                    ]
+                ]
+            };
+
+            var result = controller.Solve(solveRequest);
+
+            Assert.That(result, Is.InstanceOf(badRequestType));
+            Assert.That((result as BadRequestObjectResult)?.Value, Is.EqualTo("Some pieces have invalid colors."));
         }
     }
 }
