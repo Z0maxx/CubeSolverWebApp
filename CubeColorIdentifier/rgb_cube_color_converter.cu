@@ -35,11 +35,11 @@ __device__ CubeColor convertRgbToCubeColor(int r, int g, int b)
 		{
 			return CubeColor_Orange;
 		}
-		if (deg > 45 && deg <= 70)
+		if (deg > 45 && deg <= 75)
 		{
 			return CubeColor_Yellow;
 		}
-		if (deg > 70 && deg <= 160)
+		if (deg > 75 && deg <= 160)
 		{
 			return CubeColor_Green;
 		}
